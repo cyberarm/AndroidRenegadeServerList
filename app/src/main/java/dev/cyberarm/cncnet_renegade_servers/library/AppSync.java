@@ -16,6 +16,14 @@ public class AppSync {
     static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
     private static boolean lockNetwork = false;
 
+    public static Gson gson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(RenegadeServer.class, new RenegadeServerDeserializer())
+                .registerTypeAdapter(RenegadePlayer.class, new RenegadePlayerDeserializer())
+                .serializeNulls()
+                .create();
+    }
+
     public static void fetchList(Callback callback) {
         if (lockNetwork) {
             return;
@@ -42,12 +50,7 @@ public class AppSync {
 
                     System.out.println(stringBuffer.toString());
 
-                    RenegadeServer[] serverList = new GsonBuilder()
-                            .registerTypeAdapter(RenegadeServer.class, new RenegadeServerDeserializer())
-                            .registerTypeAdapter(RenegadePlayer.class, new RenegadePlayerDeserializer())
-                            .serializeNulls()
-                            .create()
-                            .fromJson(stringBuffer.toString(), RenegadeServer[].class);
+                    RenegadeServer[] serverList = gson().fromJson(stringBuffer.toString(), RenegadeServer[].class);
 
                     callback.setServerList(serverList);
                     callback.run();

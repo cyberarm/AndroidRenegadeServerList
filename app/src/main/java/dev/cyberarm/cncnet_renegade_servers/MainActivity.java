@@ -2,10 +2,14 @@ package dev.cyberarm.cncnet_renegade_servers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -39,8 +43,21 @@ public class MainActivity extends AppCompatActivity {
     private void populateServerList(ArrayList<RenegadeServer> serverList) {
         container.removeAllViews();
 
+        int i = 0;
         for (final RenegadeServer server : serverList) {
             View layout = View.inflate(this, R.layout.server_list_item, null);
+            if (i % 2 == 1) {
+                layout.setBackgroundColor(getResources().getColor(R.color.odd));
+            }
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), ServerViewActivity.class);
+                    intent.putExtra("server", AppSync.gson().toJson(server));
+
+                    startActivity(intent);
+                }
+            });
 
             TextView hostname = layout.findViewById(R.id.server_hostname);
             hostname.setText("" + (server.password ? "\uD83D\uDD12 " : "") + server.hostname);
@@ -49,9 +66,10 @@ public class MainActivity extends AppCompatActivity {
             mapname.setText(server.mapname);
 
             TextView players = layout.findViewById(R.id.server_players);
-            players.setText("" + server.players + "/" + server.maxPlayers);
+            players.setText("" + server.numplayers + "/" + server.maxplayers);
 
             container.addView(layout);
+            i++;
         }
     }
 }

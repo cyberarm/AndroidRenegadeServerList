@@ -16,7 +16,7 @@ public class Callback implements Runnable {
         Collections.sort(this.serverList, new Comparator<RenegadeServer>() {
             @Override
             public int compare(RenegadeServer a, RenegadeServer b) {
-                return Integer.compare(b.players, a.players);
+                return Integer.compare(b.numplayers, a.numplayers);
             }
         });
     }

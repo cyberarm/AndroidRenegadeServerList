@@ -20,19 +20,20 @@ public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServ
         final String countrycode = jsonObject.get("countrycode").getAsString();
         JsonElement _timeleft = jsonObject.get("timeleft");
         final String timeleft = (_timeleft instanceof JsonNull) ? "" : _timeleft.getAsString();
+        final String ip = jsonObject.get("ip").getAsString();
         final String hostname = jsonObject.get("hostname").getAsString();
         final String mapname = jsonObject.get("mapname").getAsString();
         JsonElement _website = jsonObject.get("website");
         final String website = (_website instanceof JsonNull) ? "" : _website.getAsString();
-        final int players = jsonObject.get("numplayers").getAsInt();
-        final int maxPlayers = jsonObject.get("maxplayers").getAsInt();
+        final int numplayers = jsonObject.get("numplayers").getAsInt();
+        final int maxplayers = jsonObject.get("maxplayers").getAsInt();
         final String _password = jsonObject.get("password").getAsString();
         final boolean password = _password.equals("1");
         RenegadePlayer[] playersArray = context.deserialize(jsonObject.get("players"), RenegadePlayer[].class);
 
         List<RenegadePlayer> playersList = Arrays.asList(playersArray);
-        ArrayList<RenegadePlayer> playersArrayList = new ArrayList<>(playersList);
+        ArrayList<RenegadePlayer> players = new ArrayList<>(playersList);
 
-        return new RenegadeServer(country, countrycode, timeleft, hostname, mapname, website, players, maxPlayers, password, playersArrayList);
+        return new RenegadeServer(country, countrycode, timeleft, ip, hostname, mapname, website, numplayers, maxplayers, password, players);
     }
 }
