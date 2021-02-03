@@ -36,6 +36,8 @@ public class AppSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_settings_activity);
 
+        getSupportActionBar().setTitle("App Settings");
+
         cncNetWebsite = findViewById(R.id.cncnet_website);
         cncNetWebsite.setOnClickListener(new View.OnClickListener() {
             @Override

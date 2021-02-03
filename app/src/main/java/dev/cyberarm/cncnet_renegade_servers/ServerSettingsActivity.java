@@ -33,6 +33,8 @@ public class ServerSettingsActivity extends AppCompatActivity {
         serverID = getIntent().getStringExtra("server_id");
         serverSettings = AppSync.serverSettings(serverID);
 
+        getSupportActionBar().setTitle("Server Settings");
+
         notifyPlayerCount = findViewById(R.id.server_player_count);
         notifyMaps = findViewById(R.id.server_mapnames);
         notifyUsernames = findViewById(R.id.server_usernames);
