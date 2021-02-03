@@ -1,11 +1,15 @@
 package dev.cyberarm.cncnet_renegade_servers;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -18,23 +22,25 @@ import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
 import dev.cyberarm.cncnet_renegade_servers.library.RenegadePlayer;
 import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
 
-public class ServerViewActivity extends AppCompatActivity {
+public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     private static final String TAG = "ServerViewActivity";
-    RenegadeServer renegadeServer;
+    private GestureDetectorCompat gestureDetector;
+    private RenegadeServer renegadeServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_view);
 
-        Log.i(TAG, getIntent().getStringExtra("server"));
+        gestureDetector = new GestureDetectorCompat(this,this);
 
-        renegadeServer = AppSync.gson().fromJson(getIntent().getStringExtra("server"), RenegadeServer.class);
         populateServerInfo();
     }
 
     private void populateServerInfo() {
+        renegadeServer = AppSync.serverList.get(getIntent().getIntExtra("server_index", 0));
+
         getSupportActionBar().setTitle(renegadeServer.hostname);
         LinearLayout playerInfo = findViewById(R.id.player_info);
         TextView map = findViewById(R.id.server_map);
@@ -81,5 +87,71 @@ public class ServerViewActivity extends AppCompatActivity {
             playerInfo.addView(layout);
             i++;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+            return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent eventDown, MotionEvent eventUp, float velocityX, float velocityY) {
+        float triggerVelocityX = 5_000;
+        float maxVelocityY = 5_000;
+        int minIndex = 0;
+        int maxIndex = AppSync.serverList.size() - 1;
+        int currentIndex = getIntent().getIntExtra("server_index", 0);
+
+        // Swipe Right
+        if (velocityX < -triggerVelocityX && Math.abs(velocityY) < maxVelocityY) {
+            if (currentIndex + 1 <= maxIndex) {
+
+                getIntent().putExtra("server_index", currentIndex + 1);
+                populateServerInfo();
+
+                return true;
+            }
+
+        // Swipe Left
+        } else if (velocityX > triggerVelocityX && Math.abs(velocityY) < maxVelocityY) {
+            if (currentIndex - 1 >= minIndex) {
+
+                getIntent().putExtra("server_index", currentIndex - 1);
+                populateServerInfo();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

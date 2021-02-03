@@ -1,6 +1,7 @@
 package dev.cyberarm.cncnet_renegade_servers;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         container = findViewById(R.id.container);
+        SwipeRefreshLayout refresh = findViewById(R.id.refresh);
 
         AppSync.fetchList(new Callback() {
             @Override
@@ -33,9 +35,27 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        populateServerList(serverList);
+                        populateServerList(AppSync.serverList);
                     }
                 });
+            }
+        }, false);
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                AppSync.fetchList(new Callback() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateServerList(AppSync.serverList);
+                                refresh.setRefreshing(false);
+                            }
+                        });
+                    }
+                }, true);
             }
         });
     }
@@ -45,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         int i = 0;
         for (final RenegadeServer server : serverList) {
+            final int index = i;
+
             View layout = View.inflate(this, R.layout.server_list_item, null);
             if (i % 2 == 1) {
                 layout.setBackgroundColor(getResources().getColor(R.color.odd));
@@ -53,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), ServerViewActivity.class);
-                    intent.putExtra("server", AppSync.gson().toJson(server));
+                    intent.putExtra("server_index", index);
 
                     startActivity(intent);
                 }
