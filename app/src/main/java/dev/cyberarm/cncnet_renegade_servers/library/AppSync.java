@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,16 +19,65 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import dev.cyberarm.cncnet_renegade_servers.MainActivity;
+
 public class AppSync {
     static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
     private static final String TAG = "AppSync";
+    private static final String VERSION = "0.1.0";
+    private static final String USER_AGENT = String.format("CyberarmRenegadeServerList/%s (cyberarm.dev)", VERSION);
     private static boolean lockNetwork = false;
-    public static ArrayList<RenegadeServer> serverList;
     private static long lastSuccessfulFetch = 0;
     private static long softFetchLimit = 30_000; // milliseconds
 
+    public static ArrayList<RenegadeServer> serverList;
+    public static ArrayList<RenegadeServer> lastServerList;
+    public static Settings settings;
+    public static boolean appInitialized = false;
+    private static String storageLocation;
+    private static String configFilePath;
+
+    public static void initialize(File storageLocation) {
+        if (appInitialized) {
+            throw(new RuntimeException("AppSync all ready initialized!"));
+        }
+
+        AppSync.storageLocation = storageLocation.getPath();
+        AppSync.configFilePath = storageLocation + File.pathSeparator + "settings.json";
+        appInitialized = true;
+
+        loadSettings();
+        launchBackgroundService();
+    }
+
+    private static void loadSettings() {
+        // TODO: Load settings file if exists
+        File configFile = new File(configFilePath);
+        if (configFile.exists()) {
+            settings = gson().fromJson(readFromFile(configFile.getPath()), Settings.class);
+        } else {
+            settings = new Settings("", 0, false,
+                                    new ServerSettings("", 0, new ArrayList<>(), new ArrayList<>()),
+                                    new ArrayList<>());
+            saveSettings();
+        }
+    }
+
+    public static boolean saveSettings() {
+        return writeToFile(configFilePath, gson().toJson(settings, Settings.class));
+    }
+
+    private static void launchBackgroundService() {
+        if (settings.serviceAutoRefreshInterval != 0 || settings.serviceAutoStartAtBoot) {
+            // TODO: Launch service
+        }
+    }
+
     public static void setServerList(RenegadeServer[] serverList) {
         List<RenegadeServer> list = Arrays.asList(serverList);
+        if (AppSync.serverList != null) {
+            AppSync.lastServerList = AppSync.serverList;
+        }
         AppSync.serverList = new ArrayList<>(list);
 
         Collections.sort(AppSync.serverList, new Comparator<RenegadeServer>() {
@@ -40,6 +92,10 @@ public class AppSync {
         return new GsonBuilder()
                 .registerTypeAdapter(RenegadeServer.class, new RenegadeServerDeserializer())
                 .registerTypeAdapter(RenegadePlayer.class, new RenegadePlayerDeserializer())
+                .registerTypeAdapter(ServerSettings.class, new ServerSettingsSerializer())
+                .registerTypeAdapter(ServerSettings.class, new ServerSettingsDeserializer())
+                .registerTypeAdapter(Settings.class, new SettingsSerializer())
+                .registerTypeAdapter(Settings.class, new SettingsDeserializer())
                 .serializeNulls()
                 .create();
     }
@@ -68,6 +124,8 @@ public class AppSync {
                 try {
                     URL url = new URL(ENDPOINT);
                     urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestProperty("User-Agent", USER_AGENT);
+
                     InputStreamReader inputStream = new InputStreamReader(urlConnection.getInputStream());
                     BufferedReader reader = new BufferedReader(inputStream);
                     StringBuilder stringBuffer = new StringBuilder();
@@ -92,5 +150,52 @@ public class AppSync {
                 }
             }
         }).start();
+    }
+
+    public static String readFromFile(String path) {
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader( new FileReader(path) );
+            String line;
+
+            while((line = br.readLine()) != null) {
+                text.append(line);
+                text.append("\n");
+            }
+
+            br.close();
+        } catch (IOException e) {
+            return null;
+        }
+
+        return text.toString();
+    }
+
+    public static boolean writeToFile(String filePath, String content) {
+        try {
+            FileWriter writer = new FileWriter(filePath);
+            writer.write(content);
+            writer.close();
+
+            return true;
+
+        } catch (IOException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+            return false;
+        }
+    }
+
+    public static ServerSettings serverSettings(String serverID) {
+        for (ServerSettings serverSettings : settings.serverSettings) {
+            if (serverSettings.ID.equals(serverID)) {
+                return serverSettings;
+            }
+        }
+
+        ServerSettings serverSettings = new ServerSettings(serverID, 0, new ArrayList<>(), new ArrayList<>());
+        settings.serverSettings.add(serverSettings);
+
+        return serverSettings;
     }
 }

@@ -21,6 +21,7 @@ public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServ
         JsonElement _timeleft = jsonObject.get("timeleft");
         final String timeleft = (_timeleft instanceof JsonNull) ? "" : _timeleft.getAsString();
         final String ip = jsonObject.get("ip").getAsString();
+        final int hostport = jsonObject.get("hostport").getAsInt();
         final String hostname = jsonObject.get("hostname").getAsString();
         final String mapname = jsonObject.get("mapname").getAsString();
         JsonElement _website = jsonObject.get("website");
@@ -34,6 +35,6 @@ public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServ
         List<RenegadePlayer> playersList = Arrays.asList(playersArray);
         ArrayList<RenegadePlayer> players = new ArrayList<>(playersList);
 
-        return new RenegadeServer(country, countrycode, timeleft, ip, hostname, mapname, website, numplayers, maxplayers, password, players);
+        return new RenegadeServer(country, countrycode, timeleft, ip, hostport, hostname, mapname, website, numplayers, maxplayers, password, players);
     }
 }

@@ -1,5 +1,6 @@
 package dev.cyberarm.cncnet_renegade_servers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GestureDetectorCompat;
@@ -9,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
+import dev.cyberarm.cncnet_renegade_servers.library.Callback;
 import dev.cyberarm.cncnet_renegade_servers.library.RenegadePlayer;
 import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
 
@@ -87,6 +92,27 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
             playerInfo.addView(layout);
             i++;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.server_view_activity_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, ServerSettingsActivity.class);
+                intent.putExtra("server_id", String.format("%s:%d", renegadeServer.ip, renegadeServer.hostport));
+                startActivity(intent);
+                break;
+        }
+
+        return true;
     }
 
     @Override

@@ -1,10 +1,14 @@
 package dev.cyberarm.cncnet_renegade_servers;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout container;
+    SwipeRefreshLayout refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         container = findViewById(R.id.container);
-        SwipeRefreshLayout refresh = findViewById(R.id.refresh);
+        refresh = findViewById(R.id.refresh);
+
+        if (!AppSync.appInitialized) {
+            AppSync.initialize(getFilesDir());
+        }
 
         AppSync.fetchList(new Callback() {
             @Override
@@ -93,5 +102,42 @@ public class MainActivity extends AppCompatActivity {
             container.addView(layout);
             i++;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_activity_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, AppSettingsActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.action_refresh:
+                refresh.setRefreshing(true);
+
+                AppSync.fetchList(new Callback() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateServerList(AppSync.serverList);
+                                refresh.setRefreshing(false);
+                            }
+                        });
+                    }
+                }, true);
+                break;
+        }
+
+        return true;
     }
 }
