@@ -8,15 +8,12 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,8 +22,8 @@ import dev.cyberarm.cncnet_renegade_servers.R;
 
 public class RenegadeServerListService extends Service {
     private static final String TAG = "ServerListService";
-    private static final String CHANNEL_ID = "RenegadeServerListService";
-    private static final String CHANNEL_ID_B = "RenegadeServerListService_Noisy";
+    private static final String CHANNEL_ID = "Renegade Server List Quite";
+    private static final String CHANNEL_ID_NOISY = "Renegade Server List Noisy";
     private static final int ID = 2002_02_27;
     private static final int ID_B = 2021_02_27;
     private long lastTrigger;
@@ -88,7 +85,7 @@ public class RenegadeServerListService extends Service {
             channel.setDescription("");
 
             int importance_b = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel_b = new NotificationChannel(CHANNEL_ID_B, CHANNEL_ID_B, importance_b);
+            NotificationChannel channel_b = new NotificationChannel(CHANNEL_ID_NOISY, CHANNEL_ID_NOISY, importance_b);
             channel_b.setDescription("");
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
@@ -188,7 +185,7 @@ public class RenegadeServerListService extends Service {
         String notificationBody = message.toString().trim();
 
         if (notificationBody.length() > 0) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_B)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setContentTitle("Renegade Server List")
                     .setContentText(notificationBody)

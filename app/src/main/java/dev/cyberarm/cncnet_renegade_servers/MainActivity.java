@@ -48,17 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(new AppOnBootReceiver(), new IntentFilter(Intent.ACTION_BOOT_COMPLETED));
 
-//        AppSync.fetchList(new Callback() {
-//            @Override
-//            public void run() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        populateServerList(AppSync.serverList);
-//                    }
-//                });
-//            }
-//        }, false);
+        AppSync.fetchList(new Callback() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        populateServerList(AppSync.serverList);
+                    }
+                });
+            }
+        }, false);
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
