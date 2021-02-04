@@ -75,8 +75,11 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         for (final RenegadePlayer player : renegadeServer.players) {
             View layout = View.inflate(this, R.layout.player_info_item, null);
             if (i % 2 == 1) {
-                layout.setBackgroundColor(getResources().getColor(R.color.odd));
-            }
+                if (AppSync.isDarkMode(this)) {
+                    layout.setBackgroundColor(getResources().getColor(R.color.odd_dark));
+                } else {
+                    layout.setBackgroundColor(getResources().getColor(R.color.odd));
+                }            }
 
             TextView team = layout.findViewById(R.id.team);
             TextView name = layout.findViewById(R.id.name);

@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.library;
+package dev.cyberarm.cncnet_renegade_servers.serializers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
@@ -13,6 +13,9 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import dev.cyberarm.cncnet_renegade_servers.library.ServerSettings;
+import dev.cyberarm.cncnet_renegade_servers.library.Settings;
 
 public class SettingsSerializer implements JsonSerializer<Settings> {
     @Override

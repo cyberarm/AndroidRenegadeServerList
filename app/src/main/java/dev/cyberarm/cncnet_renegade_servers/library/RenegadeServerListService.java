@@ -119,7 +119,7 @@ public class RenegadeServerListService extends Service {
 
     private void evaluate() {
         StringBuilder message = new StringBuilder();
-        RenegadeServer oldDataServer = new RenegadeServer("", "", "", "",
+        RenegadeServer oldDataServer = new RenegadeServer("Earth", "EA", "0.0.0", "",
                 0, "", "", "", 0, 0, false, new ArrayList<RenegadePlayer>());
 
         for (RenegadeServer server : AppSync.serverList) {
@@ -136,6 +136,11 @@ public class RenegadeServerListService extends Service {
             int notifyPlayerCount = AppSync.settings.globalServerSettings.notifyPlayerCount;
             ArrayList<String> mapnames = AppSync.settings.globalServerSettings.notifyMapNames;
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
+
+            // Skip if user is in-game
+            if (usernames.stream().anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
+                continue;
+            }
 
             if (serverSettings.notifyPlayerCount > 0) {
                 notifyPlayerCount = serverSettings.notifyPlayerCount;

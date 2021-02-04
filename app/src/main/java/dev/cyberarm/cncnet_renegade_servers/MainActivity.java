@@ -2,16 +2,19 @@ package dev.cyberarm.cncnet_renegade_servers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ImageViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
             View layout = View.inflate(this, R.layout.server_list_item, null);
             if (i % 2 == 1) {
-                layout.setBackgroundColor(getResources().getColor(R.color.odd));
+                if (AppSync.isDarkMode(this)) {
+                    layout.setBackgroundColor(getResources().getColor(R.color.odd_dark));
+                } else {
+                    layout.setBackgroundColor(getResources().getColor(R.color.odd));
+                }
             }
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,8 +107,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            ImageView gameIcon = layout.findViewById(R.id.server_game_icon);
             TextView hostname = layout.findViewById(R.id.server_hostname);
             hostname.setText("" + (server.password ? "\uD83D\uDD12 " : "") + server.hostname);
+
+            if (server.hostname.toLowerCase().contains("[w3dhub]")) {
+                if (server.hostname.toLowerCase().contains("interim apex")) {
+                    gameIcon.setImageResource(R.drawable.ia_icon);
+                } else if (server.hostname.toLowerCase().contains(" tsr ")) {
+                    gameIcon.setImageResource(R.drawable.tsr_icon);
+                } else if (server.hostname.toLowerCase().contains(" apb ")) {
+                    gameIcon.setImageResource(R.drawable.apb_icon);
+                } else if (server.hostname.toLowerCase().contains(" bfd ")) {
+                    gameIcon.setImageResource(R.drawable.bfd_icon);
+                }
+            }
 
             TextView mapname = layout.findViewById(R.id.server_mapname);
             mapname.setText(server.mapname);

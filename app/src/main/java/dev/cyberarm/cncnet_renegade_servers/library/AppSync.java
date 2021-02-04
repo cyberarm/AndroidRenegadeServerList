@@ -2,6 +2,7 @@ package dev.cyberarm.cncnet_renegade_servers.library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.util.Log;
 
@@ -21,6 +22,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import dev.cyberarm.cncnet_renegade_servers.serializers.RenegadePlayerDeserializer;
+import dev.cyberarm.cncnet_renegade_servers.serializers.RenegadeServerDeserializer;
+import dev.cyberarm.cncnet_renegade_servers.serializers.ServerSettingsDeserializer;
+import dev.cyberarm.cncnet_renegade_servers.serializers.ServerSettingsSerializer;
+import dev.cyberarm.cncnet_renegade_servers.serializers.SettingsDeserializer;
+import dev.cyberarm.cncnet_renegade_servers.serializers.SettingsSerializer;
 
 public class AppSync {
     static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
@@ -107,6 +115,11 @@ public class AppSync {
                 .registerTypeAdapter(Settings.class, new SettingsDeserializer())
                 .serializeNulls()
                 .create();
+    }
+
+    public static boolean isDarkMode(Context context) {
+        int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 
     public static void fetchList(Callback callback, boolean forceFetch) {
