@@ -122,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
                     gameIcon.setImageResource(R.drawable.bfd_icon);
                 }
             }
+            if (server.hostname.toLowerCase().contains("expansive civilian warfare")) {
+                gameIcon.setImageResource(R.drawable.ecw_icon);
+            }
 
             TextView mapname = layout.findViewById(R.id.server_mapname);
             mapname.setText(server.mapname);
