@@ -65,6 +65,7 @@ public class AppSettingsActivity extends AppCompatActivity {
 
         notifyPlayerCount.setText("" + AppSync.settings.globalServerSettings.notifyPlayerCount);
 
+        // TODO: Fix String.join as is Oreo method... 😤😤
         notifyMaps.setText(String.join(", ", AppSync.settings.globalServerSettings.notifyMapNames));
         notifyUsernames.setText(String.join(", ", AppSync.settings.globalServerSettings.notifyUsernames));
     }
@@ -92,6 +93,12 @@ public class AppSettingsActivity extends AppCompatActivity {
         AppSync.settings.globalServerSettings.notifyUsernames = usernamesList;
 
         AppSync.saveSettings();
+
+        if (AppSync.settings.serviceAutoRefreshInterval > 0) {
+            AppSync.startService(this);
+        } else {
+            AppSync.stopService(this);
+        }
     }
 
     @Override

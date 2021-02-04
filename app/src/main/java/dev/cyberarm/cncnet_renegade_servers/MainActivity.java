@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +20,11 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import dev.cyberarm.cncnet_renegade_servers.library.AppOnBootReceiver;
 import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
 import dev.cyberarm.cncnet_renegade_servers.library.Callback;
 import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
+import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServerListService;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout container;
@@ -36,19 +40,25 @@ public class MainActivity extends AppCompatActivity {
 
         if (!AppSync.appInitialized) {
             AppSync.initialize(getFilesDir());
+
+            if (AppSync.settings.serviceAutoRefreshInterval > 0) {
+                AppSync.startService(this);
+            }
         }
 
-        AppSync.fetchList(new Callback() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        populateServerList(AppSync.serverList);
-                    }
-                });
-            }
-        }, false);
+        registerReceiver(new AppOnBootReceiver(), new IntentFilter(Intent.ACTION_BOOT_COMPLETED));
+
+//        AppSync.fetchList(new Callback() {
+//            @Override
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        populateServerList(AppSync.serverList);
+//                    }
+//                });
+//            }
+//        }, false);
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

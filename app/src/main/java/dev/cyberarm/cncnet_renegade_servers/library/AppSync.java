@@ -1,5 +1,8 @@
 package dev.cyberarm.cncnet_renegade_servers.library;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -19,8 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import dev.cyberarm.cncnet_renegade_servers.MainActivity;
-
 public class AppSync {
     static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
     private static final String TAG = "AppSync";
@@ -28,7 +29,7 @@ public class AppSync {
     private static final String USER_AGENT = String.format("CyberarmRenegadeServerList/%s (cyberarm.dev)", VERSION);
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
-    private static long softFetchLimit = 30_000; // milliseconds
+    public  static final long softFetchLimit = 30_000; // milliseconds
 
     public static ArrayList<RenegadeServer> serverList;
     public static ArrayList<RenegadeServer> lastServerList;
@@ -47,7 +48,21 @@ public class AppSync {
         appInitialized = true;
 
         loadSettings();
-        launchBackgroundService();
+    }
+
+    public static void startService(Context context) {
+        Intent intent = new Intent(context, RenegadeServerListService.class);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
+    }
+
+    public static void stopService(Context context) {
+        Intent intent = new Intent(context, RenegadeServerListService.class);
+        context.stopService(intent);
     }
 
     private static void loadSettings() {
@@ -65,12 +80,6 @@ public class AppSync {
 
     public static boolean saveSettings() {
         return writeToFile(configFilePath, gson().toJson(settings, Settings.class));
-    }
-
-    private static void launchBackgroundService() {
-        if (settings.serviceAutoRefreshInterval != 0 || settings.serviceAutoStartAtBoot) {
-            // TODO: Launch service
-        }
     }
 
     public static void setServerList(RenegadeServer[] serverList) {
