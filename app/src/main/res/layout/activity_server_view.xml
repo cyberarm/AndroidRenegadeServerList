@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/server_info_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ServerViewActivity">
 
     <LinearLayout
@@ -16,9 +17,7 @@
         android:paddingLeft="8dp"
         android:paddingTop="4dp"
         android:paddingRight="8dp"
-        android:paddingBottom="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -85,9 +84,8 @@
         android:id="@+id/player_info_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/server_info">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
         <TextView
             android:id="@+id/team"
@@ -95,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Team"
-            android:textAlignment="center"
+            android:textAlignment="inherit"
             android:textStyle="bold" />
 
         <TextView
@@ -104,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Name"
-            android:textAlignment="center"
+            android:textAlignment="inherit"
             android:textStyle="bold" />
 
         <TextView
@@ -113,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Score"
-            android:textAlignment="center"
+            android:textAlignment="inherit"
             android:textStyle="bold" />
 
         <TextView
@@ -122,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Kills"
-            android:textAlignment="center"
+            android:textAlignment="inherit"
             android:textStyle="bold" />
 
         <TextView
@@ -131,15 +129,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Deaths"
-            android:textAlignment="center"
+            android:textAlignment="inherit"
             android:textStyle="bold" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/player_info_header">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/player_info"
@@ -148,4 +145,4 @@
             android:orientation="vertical" />
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

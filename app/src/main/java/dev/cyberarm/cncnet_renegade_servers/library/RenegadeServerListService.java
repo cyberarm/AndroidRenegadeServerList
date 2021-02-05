@@ -15,7 +15,9 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
+import java8.util.stream.Collectors;
+import java8.lang.Iterables;
 
 import dev.cyberarm.cncnet_renegade_servers.MainActivity;
 import dev.cyberarm.cncnet_renegade_servers.R;
@@ -65,11 +67,11 @@ public class RenegadeServerListService extends Service {
 
     private void foregroundify() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ren_icon)
                 .setContentIntent(pendingIntent);
         Notification notification = builder.build();
 
@@ -138,7 +140,7 @@ public class RenegadeServerListService extends Service {
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
 
             // Skip if user is in-game
-            if (usernames.stream().anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
+            if (StreamSupport.stream(usernames).anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
                 continue;
             }
 
@@ -172,13 +174,13 @@ public class RenegadeServerListService extends Service {
                 }
             }
 
-            ArrayList<String> joinedPlayers = server.players.stream().map(obj -> obj.name).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<String> joinedPlayers = StreamSupport.stream(server.players).map(obj -> obj.name).collect(Collectors.toCollection(ArrayList::new));
 
             for (RenegadePlayer player : oldDataServer.players) {
-               joinedPlayers.removeIf(obj -> obj.equals(player.name));
+                Iterables.removeIf(joinedPlayers, obj -> obj.equals(player.name));
             }
 
-            joinedPlayers.removeIf(obj -> obj.toLowerCase().equals("gdi") || obj.toLowerCase().equals("nod"));
+            Iterables.removeIf(joinedPlayers, obj -> obj.toLowerCase().equals("gdi") || obj.toLowerCase().equals("nod"));
 
             for (String player : joinedPlayers) {
                 if (usernames.contains(player)) {

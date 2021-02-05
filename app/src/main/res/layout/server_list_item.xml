@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/server_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingLeft="8dp"
     android:paddingTop="4dp"
@@ -14,7 +14,8 @@
     <ImageView
         android:id="@+id/server_game_icon"
         android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
         app:srcCompat="@drawable/ren_icon" />
 
     <LinearLayout
@@ -38,7 +39,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="48dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 

@@ -58,6 +58,10 @@ public class AppSync {
         loadSettings();
     }
 
+    public static String getConfigFilePath() {
+        return configFilePath;
+    }
+
     public static void startService(Context context) {
         Intent intent = new Intent(context, RenegadeServerListService.class);
 

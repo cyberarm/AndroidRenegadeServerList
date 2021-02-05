@@ -1,11 +1,15 @@
 package dev.cyberarm.cncnet_renegade_servers;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,15 +17,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
+import dev.cyberarm.cncnet_renegade_servers.library.Settings;
 
 public class AppSettingsActivity extends AppCompatActivity {
+    private static final int EXPORT_FILE = 1;
+    private static final int IMPORT_FILE = 2;
+    private static final String TAG = "AppSettingsActivity";
+    private static final String DEFAULT_SETTINGS_NAME = "rensrvlist_settings.json";
+    private static final String MIME_TYPE = "application/json";
     Button cncNetWebsite;
     EditText renegadeUsername;
     TextView autoRefreshInterval;
@@ -31,6 +49,8 @@ public class AppSettingsActivity extends AppCompatActivity {
     TextView notifyMaps;
     TextView notifyUsernames;
 
+    Button settingsExport, settingsImport;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +59,9 @@ public class AppSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("App Settings");
 
         cncNetWebsite = findViewById(R.id.cncnet_website);
-        cncNetWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cncnet.org/renegade"));
-                startActivity(browserIntent);
-            }
+        cncNetWebsite.setOnClickListener(view -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cncnet.org/renegade"));
+            startActivity(browserIntent);
         });
 
         renegadeUsername = findViewById(R.id.username);
@@ -55,7 +72,34 @@ public class AppSettingsActivity extends AppCompatActivity {
         notifyMaps = findViewById(R.id.server_mapnames);
         notifyUsernames = findViewById(R.id.server_usernames);
 
+        settingsExport = findViewById(R.id.settings_export);
+        settingsImport = findViewById(R.id.settings_import);
+
+        settingsExport.setOnClickListener(view -> {
+            exportSettings();
+        });
+        settingsImport.setOnClickListener(view -> {
+            importSettings();
+        });
+
         loadSettings();
+    }
+
+    private void exportSettings() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                            .addCategory(Intent.CATEGORY_OPENABLE)
+                            .setType(MIME_TYPE)
+                            .putExtra(Intent.EXTRA_TITLE, DEFAULT_SETTINGS_NAME);
+        startActivityForResult(intent, EXPORT_FILE);
+    }
+
+
+    private void importSettings() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType(MIME_TYPE)
+                .putExtra(Intent.EXTRA_TITLE, DEFAULT_SETTINGS_NAME);
+        startActivityForResult(intent, IMPORT_FILE);
     }
 
     private void loadSettings() {
@@ -98,6 +142,57 @@ public class AppSettingsActivity extends AppCompatActivity {
             AppSync.startService(this);
         } else {
             AppSync.stopService(this);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case EXPORT_FILE: {
+                    Log.i(TAG, "EXPORT " + data);
+                    try {
+                        OutputStream io = this.getContentResolver().openOutputStream(data.getData(), "w");
+                        io.write(AppSync.gson().toJson(AppSync.settings).getBytes());
+                        io.close();
+
+                        Toast.makeText(this, "Exported preferences", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case IMPORT_FILE: {
+                    // TODO: Validate file
+                    Log.i(TAG, "IMPORT " + data);
+                    try {
+                        InputStream io = this.getContentResolver().openInputStream(data.getData());
+                        InputStreamReader inputStreamReader = new InputStreamReader(io);
+                        BufferedReader reader = new BufferedReader(inputStreamReader);
+                        StringBuilder stringBuffer = new StringBuilder();
+
+                        String output;
+                        while ((output = reader.readLine()) != null) {
+                            stringBuffer.append(output);
+                        }
+
+                        reader.read();
+                        io.close();
+                        reader.close();
+
+                        AppSync.settings = AppSync.gson().fromJson(stringBuffer.toString(), Settings.class);
+                        AppSync.writeToFile(AppSync.getConfigFilePath(), stringBuffer.toString());
+                        loadSettings();
+
+                        Toast.makeText(this, "Imported preferences", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
         }
     }
 

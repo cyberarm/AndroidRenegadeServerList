@@ -17,7 +17,7 @@ public class AppOnBootReceiver extends BroadcastReceiver {
             }
 
             if (AppSync.settings.serviceAutoStartAtBoot) {
-                Log.i(TAG, "Auto starting TACNET Server Service...");
+                Log.i(TAG, "Auto starting Service...");
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(new Intent(context, RenegadeServerListService.class));
