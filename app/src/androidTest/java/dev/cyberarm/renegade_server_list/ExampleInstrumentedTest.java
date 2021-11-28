@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers;
+package dev.cyberarm.renegade_server_list;
 
 import android.content.Context;
 

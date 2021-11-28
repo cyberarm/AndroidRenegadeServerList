@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.library;
+package dev.cyberarm.renegade_server_list.library;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,12 +23,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import dev.cyberarm.cncnet_renegade_servers.serializers.RenegadePlayerDeserializer;
-import dev.cyberarm.cncnet_renegade_servers.serializers.RenegadeServerDeserializer;
-import dev.cyberarm.cncnet_renegade_servers.serializers.ServerSettingsDeserializer;
-import dev.cyberarm.cncnet_renegade_servers.serializers.ServerSettingsSerializer;
-import dev.cyberarm.cncnet_renegade_servers.serializers.SettingsDeserializer;
-import dev.cyberarm.cncnet_renegade_servers.serializers.SettingsSerializer;
+import dev.cyberarm.renegade_server_list.serializers.RenegadePlayerDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.RenegadeServerDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.ServerSettingsDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.ServerSettingsSerializer;
+import dev.cyberarm.renegade_server_list.serializers.SettingsDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.SettingsSerializer;
 
 public class AppSync {
     static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";

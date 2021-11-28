@@ -1,19 +1,16 @@
-package dev.cyberarm.cncnet_renegade_servers;
+package dev.cyberarm.renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,18 +18,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
-import dev.cyberarm.cncnet_renegade_servers.library.Settings;
+import dev.cyberarm.renegade_server_list.library.AppSync;
+import dev.cyberarm.renegade_server_list.library.Settings;
 
 public class AppSettingsActivity extends AppCompatActivity {
     private static final int EXPORT_FILE = 1;

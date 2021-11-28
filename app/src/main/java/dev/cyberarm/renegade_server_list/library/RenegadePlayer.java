@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.library;
+package dev.cyberarm.renegade_server_list.library;
 
 public class RenegadePlayer {
     public String team, name;

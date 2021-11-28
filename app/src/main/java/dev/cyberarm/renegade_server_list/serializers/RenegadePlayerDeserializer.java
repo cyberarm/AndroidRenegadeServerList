@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.serializers;
+package dev.cyberarm.renegade_server_list.serializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadePlayer;
+import dev.cyberarm.renegade_server_list.library.RenegadePlayer;
 
 public class RenegadePlayerDeserializer implements JsonDeserializer<RenegadePlayer> {
     @Override

@@ -1,14 +1,11 @@
-package dev.cyberarm.cncnet_renegade_servers;
+package dev.cyberarm.renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.ImageViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,17 +14,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import dev.cyberarm.cncnet_renegade_servers.library.AppOnBootReceiver;
-import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
-import dev.cyberarm.cncnet_renegade_servers.library.Callback;
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServerListService;
+import dev.cyberarm.renegade_server_list.library.AppOnBootReceiver;
+import dev.cyberarm.renegade_server_list.library.AppSync;
+import dev.cyberarm.renegade_server_list.library.Callback;
+import dev.cyberarm.renegade_server_list.library.RenegadeServer;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout container;

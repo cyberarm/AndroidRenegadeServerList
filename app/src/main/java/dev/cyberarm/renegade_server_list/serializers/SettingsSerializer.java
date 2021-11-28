@@ -1,21 +1,15 @@
-package dev.cyberarm.cncnet_renegade_servers.serializers;
+package dev.cyberarm.renegade_server_list.serializers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import dev.cyberarm.cncnet_renegade_servers.library.ServerSettings;
-import dev.cyberarm.cncnet_renegade_servers.library.Settings;
+import dev.cyberarm.renegade_server_list.library.ServerSettings;
+import dev.cyberarm.renegade_server_list.library.Settings;
 
 public class SettingsSerializer implements JsonSerializer<Settings> {
     @Override

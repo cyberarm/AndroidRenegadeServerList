@@ -1,6 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.library;
-
-import com.google.gson.Gson;
+package dev.cyberarm.renegade_server_list.library;
 
 import java.util.ArrayList;
 

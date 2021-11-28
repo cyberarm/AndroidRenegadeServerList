@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers;
+package dev.cyberarm.renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
-import dev.cyberarm.cncnet_renegade_servers.library.ServerSettings;
+import dev.cyberarm.renegade_server_list.library.AppSync;
+import dev.cyberarm.renegade_server_list.library.ServerSettings;
 
 public class ServerSettingsActivity extends AppCompatActivity {
 

@@ -1,14 +1,12 @@
-package dev.cyberarm.cncnet_renegade_servers;
+package dev.cyberarm.renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,14 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import dev.cyberarm.cncnet_renegade_servers.library.AppSync;
-import dev.cyberarm.cncnet_renegade_servers.library.Callback;
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadePlayer;
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
+import dev.cyberarm.renegade_server_list.library.AppSync;
+import dev.cyberarm.renegade_server_list.library.RenegadePlayer;
+import dev.cyberarm.renegade_server_list.library.RenegadeServer;
 
 public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 

@@ -1,4 +1,4 @@
-package dev.cyberarm.cncnet_renegade_servers.serializers;
+package dev.cyberarm.renegade_server_list.serializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadePlayer;
-import dev.cyberarm.cncnet_renegade_servers.library.RenegadeServer;
+import dev.cyberarm.renegade_server_list.library.RenegadePlayer;
+import dev.cyberarm.renegade_server_list.library.RenegadeServer;
 
 public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServer> {
     public RenegadeServer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
