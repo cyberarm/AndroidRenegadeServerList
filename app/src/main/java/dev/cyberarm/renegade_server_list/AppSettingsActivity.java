@@ -51,9 +51,9 @@ public class AppSettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("App Settings");
 
-        cncNetWebsite = findViewById(R.id.cncnet_website);
+        cncNetWebsite = findViewById(R.id.w3dhub_website);
         cncNetWebsite.setOnClickListener(view -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://cncnet.org/renegade"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://w3dhub.com"));
             startActivity(browserIntent);
         });
 

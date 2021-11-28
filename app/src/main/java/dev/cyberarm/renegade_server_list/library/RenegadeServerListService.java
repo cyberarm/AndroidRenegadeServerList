@@ -121,20 +121,22 @@ public class RenegadeServerListService extends Service {
 
     private void evaluate() {
         StringBuilder message = new StringBuilder();
-        RenegadeServer oldDataServer = new RenegadeServer("Earth", "EA", "0.0.0", "",
-                0, "", "", "", 0, 0, false, new ArrayList<RenegadePlayer>());
 
         for (RenegadeServer server : AppSync.serverList) {
+            RenegadeServer oldDataServer = null;
+
             if (AppSync.lastServerList != null) {
                 for (RenegadeServer oldServer : AppSync.lastServerList) {
-                    if ((server.hostname + "" + server.hostport).equals(oldServer.hostname + "" + oldServer.hostport)) {
+                    if ((server.id).equals(oldServer.id)) {
                         oldDataServer = oldServer;
                         break;
                     }
                 }
             }
 
-            ServerSettings serverSettings = AppSync.serverSettings(server.ip + "" + server.hostport);
+            if (oldDataServer == null) { continue;}
+
+            ServerSettings serverSettings = AppSync.serverSettings(server.address + "" + server.port);
             int notifyPlayerCount = AppSync.settings.globalServerSettings.notifyPlayerCount;
             ArrayList<String> mapnames = AppSync.settings.globalServerSettings.notifyMapNames;
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
@@ -160,31 +162,31 @@ public class RenegadeServerListService extends Service {
                 usernames = new ArrayList<>(set);
             }
 
-            if (server.numplayers > 0 && server.numplayers >= notifyPlayerCount && server.numplayers > oldDataServer.numplayers) {
-                message.append(server.hostname + " has " + server.numplayers + " players\n");
+            if (server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
+                message.append(server.status.name + " has " + server.status.numPlayers + " players\n");
             }
 
-            if (!server.mapname.equals(oldDataServer.mapname)) {
+            if (!server.status.map.equals(oldDataServer.status.map)) {
                 for(String mapname : mapnames) {
 
-                    if (server.mapname.contains(mapname)) {
-                        message.append(server.hostname + " current map: " + server.mapname + "\n");
+                    if (server.status.map.contains(mapname)) {
+                        message.append(server.status.name + " current map: " + server.status.map + "\n");
                         break;
                     }
                 }
             }
 
-            ArrayList<String> joinedPlayers = StreamSupport.stream(server.players).map(obj -> obj.name).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<String> joinedPlayers = StreamSupport.stream(server.status.players).map(obj -> obj.nick).collect(Collectors.toCollection(ArrayList::new));
 
-            for (RenegadePlayer player : oldDataServer.players) {
-                Iterables.removeIf(joinedPlayers, obj -> obj.equals(player.name));
+            for (RenegadeServerStatusPlayer player : oldDataServer.status.players) {
+                Iterables.removeIf(joinedPlayers, obj -> obj.equals(player.nick));
             }
 
             Iterables.removeIf(joinedPlayers, obj -> obj.toLowerCase().equals("gdi") || obj.toLowerCase().equals("nod"));
 
             for (String player : joinedPlayers) {
                 if (usernames.contains(player)) {
-                    message.append(server.hostname + " player joined: " + player + "\n");
+                    message.append(server.status.name + " player joined: " + player + "\n");
                 }
             }
         }

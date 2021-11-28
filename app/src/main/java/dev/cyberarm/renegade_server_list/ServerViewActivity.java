@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -18,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dev.cyberarm.renegade_server_list.library.AppSync;
-import dev.cyberarm.renegade_server_list.library.RenegadePlayer;
+import dev.cyberarm.renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.renegade_server_list.library.RenegadeServer;
 
 public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -40,33 +39,23 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
     private void populateServerInfo() {
         renegadeServer = AppSync.serverList.get(getIntent().getIntExtra("server_index", 0));
 
-        getSupportActionBar().setTitle(renegadeServer.hostname);
+        getSupportActionBar().setTitle(renegadeServer.status.name);
         LinearLayout playerInfo = findViewById(R.id.player_info);
         TextView map = findViewById(R.id.server_map);
-        TextView country = findViewById(R.id.server_country);
+        TextView region = findViewById(R.id.server_region);
         TextView players = findViewById(R.id.server_players);
         Button website = findViewById(R.id.server_website);
 
-        map.setText(renegadeServer.mapname);
-        country.setText(renegadeServer.country);
-        players.setText("" + renegadeServer.numplayers + "/" + renegadeServer.maxplayers);
+        map.setText(renegadeServer.status.map);
+        region.setText(renegadeServer.region);
+        players.setText("" + renegadeServer.status.numPlayers + "/" + renegadeServer.status.maxPlayers);
 
-        if (renegadeServer.website != null && renegadeServer.website.length() > 0) {
-            website.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + renegadeServer.website));
-                    startActivity(browserIntent);
-                }
-            });
-        } else {
-            website.setVisibility(View.GONE);
-        }
+        website.setVisibility(View.GONE);
 
         playerInfo.removeAllViews();
 
         int i = 0;
-        for (final RenegadePlayer player : renegadeServer.players) {
+        for (final RenegadeServerStatusPlayer player : renegadeServer.status.players) {
             View layout = View.inflate(this, R.layout.player_info_item, null);
             if (i % 2 == 1) {
                 if (AppSync.isDarkMode(this)) {
@@ -80,8 +69,8 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
             TextView score = layout.findViewById(R.id.score);
             TextView kills = layout.findViewById(R.id.kills);
             TextView deaths = layout.findViewById(R.id.deaths);
-            team.setText(player.team);
-            name.setText(player.name);
+            team.setText(renegadeServer.status.teams.get(player.team).name);
+            name.setText(player.nick);
             score.setText("" + player.score);
             kills.setText("" + player.kills);
             deaths.setText("" + player.deaths);
@@ -104,7 +93,7 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(this, ServerSettingsActivity.class);
-                intent.putExtra("server_id", String.format("%s:%d", renegadeServer.ip, renegadeServer.hostport));
+                intent.putExtra("server_id", renegadeServer.id);
                 startActivity(intent);
                 break;
         }

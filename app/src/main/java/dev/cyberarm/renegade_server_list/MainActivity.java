@@ -102,28 +102,31 @@ public class MainActivity extends AppCompatActivity {
 
             ImageView gameIcon = layout.findViewById(R.id.server_game_icon);
             TextView hostname = layout.findViewById(R.id.server_hostname);
-            hostname.setText("" + (server.password ? "\uD83D\uDD12 " : "") + server.hostname);
+            hostname.setText("" + (server.status.password ? "\uD83D\uDD12 " : "") + server.status.name);
 
-            if (server.hostname.toLowerCase().contains("[w3dhub]")) {
-                if (server.hostname.toLowerCase().contains("interim apex")) {
+            switch (server.game) {
+                case "ia":
                     gameIcon.setImageResource(R.drawable.ia_icon);
-                } else if (server.hostname.toLowerCase().contains(" tsr ")) {
+                    break;
+                case "tsr":
                     gameIcon.setImageResource(R.drawable.tsr_icon);
-                } else if (server.hostname.toLowerCase().contains(" apb ")) {
+                    break;
+                case "apb":
                     gameIcon.setImageResource(R.drawable.apb_icon);
-                } else if (server.hostname.toLowerCase().contains(" bfd ")) {
-                    gameIcon.setImageResource(R.drawable.bfd_icon);
-                }
-            }
-            if (server.hostname.toLowerCase().contains("expansive civilian warfare")) {
-                gameIcon.setImageResource(R.drawable.ecw_icon);
+                    break;
+                case "ecw":
+                    gameIcon.setImageResource(R.drawable.ecw_icon);
+                    break;
+                default:
+                    gameIcon.setImageResource((R.drawable.ren_icon));
+                    break;
             }
 
             TextView mapname = layout.findViewById(R.id.server_mapname);
-            mapname.setText(server.mapname);
+            mapname.setText(server.status.name);
 
             TextView players = layout.findViewById(R.id.server_players);
-            players.setText("" + server.numplayers + "/" + server.maxplayers);
+            players.setText("" + server.status.numPlayers + "/" + server.status.maxPlayers);
 
             container.addView(layout);
             i++;

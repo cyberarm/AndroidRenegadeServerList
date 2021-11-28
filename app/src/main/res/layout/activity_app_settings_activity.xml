@@ -36,11 +36,11 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/cncnet_website"
+                    android:id="@+id/w3dhub_website"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="CNCNet.org" />
+                    android:text="W3DHub.com" />
             </LinearLayout>
 
             <LinearLayout

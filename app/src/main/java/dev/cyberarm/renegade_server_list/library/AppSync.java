@@ -23,18 +23,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import dev.cyberarm.renegade_server_list.serializers.RenegadePlayerDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusPlayerDeserializer;
 import dev.cyberarm.renegade_server_list.serializers.RenegadeServerDeserializer;
+import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusTeamDeserializer;
 import dev.cyberarm.renegade_server_list.serializers.ServerSettingsDeserializer;
 import dev.cyberarm.renegade_server_list.serializers.ServerSettingsSerializer;
 import dev.cyberarm.renegade_server_list.serializers.SettingsDeserializer;
 import dev.cyberarm.renegade_server_list.serializers.SettingsSerializer;
 
 public class AppSync {
-    static final public String ENDPOINT = "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
+    static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2"; // "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
     private static final String TAG = "AppSync";
     private static final String VERSION = "0.1.0";
-    private static final String USER_AGENT = String.format("CyberarmRenegadeServerList/%s (cyberarm.dev)", VERSION);
+    private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
     public  static final long softFetchLimit = 30_000; // milliseconds
@@ -104,7 +106,7 @@ public class AppSync {
         Collections.sort(AppSync.serverList, new Comparator<RenegadeServer>() {
             @Override
             public int compare(RenegadeServer a, RenegadeServer b) {
-                return Integer.compare(b.numplayers, a.numplayers);
+                return Integer.compare(b.status.numPlayers, a.status.numPlayers);
             }
         });
     }
@@ -112,7 +114,9 @@ public class AppSync {
     public static Gson gson() {
         return new GsonBuilder()
                 .registerTypeAdapter(RenegadeServer.class, new RenegadeServerDeserializer())
-                .registerTypeAdapter(RenegadePlayer.class, new RenegadePlayerDeserializer())
+                .registerTypeAdapter(RenegadeServerStatus.class, new RenegadeServerStatusDeserializer())
+                .registerTypeAdapter(RenegadeServerStatusTeam.class, new RenegadeServerStatusTeamDeserializer())
+                .registerTypeAdapter(RenegadeServerStatusPlayer.class, new RenegadeServerStatusPlayerDeserializer())
                 .registerTypeAdapter(ServerSettings.class, new ServerSettingsSerializer())
                 .registerTypeAdapter(ServerSettings.class, new ServerSettingsDeserializer())
                 .registerTypeAdapter(Settings.class, new SettingsSerializer())

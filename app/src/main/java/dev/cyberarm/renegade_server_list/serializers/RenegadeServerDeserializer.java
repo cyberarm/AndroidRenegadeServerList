@@ -12,32 +12,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import dev.cyberarm.renegade_server_list.library.RenegadePlayer;
+import dev.cyberarm.renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.renegade_server_list.library.RenegadeServer;
+import dev.cyberarm.renegade_server_list.library.RenegadeServerStatus;
 
 public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServer> {
     public RenegadeServer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
 
-        final String country = jsonObject.get("country").getAsString();
-        final String countrycode = jsonObject.get("countrycode").getAsString();
-        JsonElement _timeleft = jsonObject.get("timeleft");
-        final String timeleft = (_timeleft instanceof JsonNull) ? "" : _timeleft.getAsString();
-        final String ip = jsonObject.get("ip").getAsString();
-        final int hostport = jsonObject.get("hostport").getAsInt();
-        final String hostname = jsonObject.get("hostname").getAsString();
-        final String mapname = jsonObject.get("mapname").getAsString();
-        JsonElement _website = jsonObject.get("website");
-        final String website = (_website instanceof JsonNull) ? "" : _website.getAsString();
-        final int numplayers = jsonObject.get("numplayers").getAsInt();
-        final int maxplayers = jsonObject.get("maxplayers").getAsInt();
-        final String _password = jsonObject.get("password").getAsString();
-        final boolean password = _password.equals("1");
-        RenegadePlayer[] playersArray = context.deserialize(jsonObject.get("players"), RenegadePlayer[].class);
+        final String id = jsonObject.get("id").getAsString();
+        final String game = jsonObject.get("game").getAsString();
+        final String address = jsonObject.get("address").getAsString();
+        final int port = jsonObject.get("port").getAsInt();
+        final String region = jsonObject.get("region").getAsString();
 
-        List<RenegadePlayer> playersList = Arrays.asList(playersArray);
-        ArrayList<RenegadePlayer> players = new ArrayList<>(playersList);
+        RenegadeServerStatus status = context.deserialize(jsonObject.get("status"), RenegadeServerStatus.class);
 
-        return new RenegadeServer(country, countrycode, timeleft, ip, hostport, hostname, mapname, website, numplayers, maxplayers, password, players);
+        return new RenegadeServer(id, game, address, port, region, status);
     }
 }
