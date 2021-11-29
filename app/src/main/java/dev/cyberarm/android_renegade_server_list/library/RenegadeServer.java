@@ -1,6 +1,4 @@
-package dev.cyberarm.renegade_server_list.library;
-
-import java.util.ArrayList;
+package dev.cyberarm.android_renegade_server_list.library;
 
 public class RenegadeServer {
     public String id, game, address, region;

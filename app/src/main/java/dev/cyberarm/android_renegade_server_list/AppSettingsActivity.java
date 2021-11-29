@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list;
+package dev.cyberarm.android_renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +24,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import dev.cyberarm.renegade_server_list.library.AppSync;
-import dev.cyberarm.renegade_server_list.library.Settings;
+import dev.cyberarm.android_renegade_server_list.library.AppSync;
+import dev.cyberarm.android_renegade_server_list.library.Settings;
 
 public class AppSettingsActivity extends AppCompatActivity {
     private static final int EXPORT_FILE = 1;

@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list.library;
+package dev.cyberarm.android_renegade_server_list.library;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -19,8 +19,8 @@ import java8.util.stream.StreamSupport;
 import java8.util.stream.Collectors;
 import java8.lang.Iterables;
 
-import dev.cyberarm.renegade_server_list.MainActivity;
-import dev.cyberarm.renegade_server_list.R;
+import dev.cyberarm.android_renegade_server_list.MainActivity;
+import dev.cyberarm.android_renegade_server_list.R;
 
 public class RenegadeServerListService extends Service {
     private static final String TAG = "ServerListService";

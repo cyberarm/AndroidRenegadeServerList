@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list;
+package dev.cyberarm.android_renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import dev.cyberarm.renegade_server_list.library.AppSync;
-import dev.cyberarm.renegade_server_list.library.ServerSettings;
+import dev.cyberarm.android_renegade_server_list.library.AppSync;
+import dev.cyberarm.android_renegade_server_list.library.ServerSettings;
 
 public class ServerSettingsActivity extends AppCompatActivity {
 

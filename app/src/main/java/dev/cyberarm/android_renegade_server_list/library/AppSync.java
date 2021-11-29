@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list.library;
+package dev.cyberarm.android_renegade_server_list.library;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,14 +23,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusPlayerDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.RenegadeServerDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.RenegadeServerStatusTeamDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.ServerSettingsDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.ServerSettingsSerializer;
-import dev.cyberarm.renegade_server_list.serializers.SettingsDeserializer;
-import dev.cyberarm.renegade_server_list.serializers.SettingsSerializer;
+import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusPlayerDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusTeamDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.ServerSettingsDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.ServerSettingsSerializer;
+import dev.cyberarm.android_renegade_server_list.serializers.SettingsDeserializer;
+import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 
 public class AppSync {
     static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2"; // "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";

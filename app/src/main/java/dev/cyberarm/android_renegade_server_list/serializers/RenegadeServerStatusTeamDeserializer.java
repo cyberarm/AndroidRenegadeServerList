@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list.serializers;
+package dev.cyberarm.android_renegade_server_list.serializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import dev.cyberarm.renegade_server_list.library.RenegadeServerStatusTeam;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusTeam;
 
 public class RenegadeServerStatusTeamDeserializer implements JsonDeserializer<RenegadeServerStatusTeam> {
     @Override

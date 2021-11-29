@@ -1,20 +1,15 @@
-package dev.cyberarm.renegade_server_list.serializers;
+package dev.cyberarm.android_renegade_server_list.serializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import dev.cyberarm.renegade_server_list.library.RenegadeServerStatusPlayer;
-import dev.cyberarm.renegade_server_list.library.RenegadeServer;
-import dev.cyberarm.renegade_server_list.library.RenegadeServerStatus;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatus;
 
 public class RenegadeServerDeserializer implements JsonDeserializer<RenegadeServer> {
     public RenegadeServer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

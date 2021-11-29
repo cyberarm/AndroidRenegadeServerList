@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.cyberarm.renegade_server_list">
+    package="dev.cyberarm.android_renegade_server_list">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CNCNetRenegadeServers">
         <service
-            android:name="dev.cyberarm.renegade_server_list.library.RenegadeServerListService"
+            android:name="dev.cyberarm.android_renegade_server_list.library.RenegadeServerListService"
             android:enabled="true"
             android:exported="false"></service>
 
-        <activity android:name="dev.cyberarm.renegade_server_list.ServerSettingsActivity" />
-        <activity android:name="dev.cyberarm.renegade_server_list.AppSettingsActivity" />
-        <activity android:name="dev.cyberarm.renegade_server_list.ServerViewActivity" />
-        <activity android:name="dev.cyberarm.renegade_server_list.MainActivity">
+        <activity android:name="dev.cyberarm.android_renegade_server_list.ServerSettingsActivity" />
+        <activity android:name="dev.cyberarm.android_renegade_server_list.AppSettingsActivity" />
+        <activity android:name="dev.cyberarm.android_renegade_server_list.ServerViewActivity" />
+        <activity android:name="dev.cyberarm.android_renegade_server_list.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="dev.cyberarm.renegade_server_list.library.AppOnBootReceiver">
+        <receiver android:name="dev.cyberarm.android_renegade_server_list.library.AppOnBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

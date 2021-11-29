@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list.serializers;
+package dev.cyberarm.android_renegade_server_list.serializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import dev.cyberarm.renegade_server_list.library.ServerSettings;
+import dev.cyberarm.android_renegade_server_list.library.ServerSettings;
 
 public class ServerSettingsDeserializer implements JsonDeserializer<ServerSettings> {
     @Override

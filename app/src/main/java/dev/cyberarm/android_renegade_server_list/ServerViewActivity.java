@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list;
+package dev.cyberarm.android_renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import dev.cyberarm.renegade_server_list.library.AppSync;
-import dev.cyberarm.renegade_server_list.library.RenegadeServerStatusPlayer;
-import dev.cyberarm.renegade_server_list.library.RenegadeServer;
+import dev.cyberarm.android_renegade_server_list.library.AppSync;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusPlayer;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
 
 public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 

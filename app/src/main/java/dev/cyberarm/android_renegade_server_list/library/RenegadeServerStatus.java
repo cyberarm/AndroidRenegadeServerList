@@ -1,7 +1,6 @@
-package dev.cyberarm.renegade_server_list.library;
+package dev.cyberarm.android_renegade_server_list.library;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RenegadeServerStatus {
     public String name, map, remaining;

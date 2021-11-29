@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list.library;
+package dev.cyberarm.android_renegade_server_list.library;
 
 public class RenegadeServerStatusPlayer {
     public String nick;
