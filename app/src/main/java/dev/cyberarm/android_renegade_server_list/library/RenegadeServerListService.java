@@ -136,7 +136,7 @@ public class RenegadeServerListService extends Service {
 
             if (oldDataServer == null) { continue;}
 
-            ServerSettings serverSettings = AppSync.serverSettings(server.address + "" + server.port);
+            ServerSettings serverSettings = AppSync.serverSettings(server.id);
             int notifyPlayerCount = AppSync.settings.globalServerSettings.notifyPlayerCount;
             ArrayList<String> mapnames = AppSync.settings.globalServerSettings.notifyMapNames;
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
@@ -168,6 +168,9 @@ public class RenegadeServerListService extends Service {
 
             if (!server.status.map.equals(oldDataServer.status.map)) {
                 for(String mapname : mapnames) {
+                    if (mapname.length() == 0) {
+                        continue;
+                    }
 
                     if (server.status.map.contains(mapname)) {
                         message.append(server.status.name + " current map: " + server.status.map + "\n");
