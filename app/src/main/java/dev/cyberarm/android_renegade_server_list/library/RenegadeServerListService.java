@@ -71,7 +71,7 @@ public class RenegadeServerListService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
-                .setSmallIcon(R.drawable.ren_icon)
+                .setSmallIcon(R.drawable.app_icon)
                 .setContentIntent(pendingIntent);
         Notification notification = builder.build();
 
@@ -198,7 +198,7 @@ public class RenegadeServerListService extends Service {
 
         if (notificationBody.length() > 0) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle("Renegade Server List")
                     .setContentText(notificationBody)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
