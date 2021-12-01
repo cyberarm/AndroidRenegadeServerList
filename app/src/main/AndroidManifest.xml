@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CNCNetRenegadeServers">
+        android:theme="@style/Theme.AndroidRenegadeServerList">
         <service
             android:name="dev.cyberarm.android_renegade_server_list.library.RenegadeServerListService"
             android:enabled="true"

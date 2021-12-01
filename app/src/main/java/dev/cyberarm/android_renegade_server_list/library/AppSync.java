@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import dev.cyberarm.android_renegade_server_list.R;
 import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusDeserializer;
 import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusPlayerDeserializer;
 import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerDeserializer;
@@ -227,5 +228,26 @@ public class AppSync {
         settings.serverSettings.add(serverSettings);
 
         return serverSettings;
+    }
+
+    public static int game_icon(String game) {
+        switch (game) {
+            case "ia":
+                return R.drawable.ia_icon;
+            case "tsr":
+                return R.drawable.tsr_icon;
+            case "apb":
+                return R.drawable.apb_icon;
+            case "ecw":
+                return R.drawable.ecw_icon;
+            case "ar":
+                return R.drawable.ar_icon;
+            case "bfd":
+                return R.drawable.bfd_icon;
+            case "gz":
+                return R.drawable.gz_icon;
+            default:
+                return R.drawable.ren_icon;
+        }
     }
 }

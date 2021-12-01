@@ -9,11 +9,16 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatus;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusTeam;
+import java8.lang.Iterables;
+import java8.util.Comparators;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 public class RenegadeServerStatusDeserializer implements JsonDeserializer<RenegadeServerStatus> {
     public RenegadeServerStatus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -25,7 +30,6 @@ public class RenegadeServerStatusDeserializer implements JsonDeserializer<Renega
         final int maxPlayers = jsonObject.get("maxplayers").getAsInt();
         String started = jsonObject.get("started").getAsString();
         JsonElement _password = jsonObject.get("password");
-        System.out.println(_password);
         final boolean password = _password == null ? false : _password.getAsBoolean();
 
         RenegadeServerStatusTeam[] teamsArray = context.deserialize(jsonObject.get("teams"), RenegadeServerStatusTeam[].class);
@@ -36,9 +40,11 @@ public class RenegadeServerStatusDeserializer implements JsonDeserializer<Renega
         RenegadeServerStatusPlayer[] playersArray = context.deserialize(jsonObject.get("players"), RenegadeServerStatusPlayer[].class);
 
         List<RenegadeServerStatusPlayer> playersList = Arrays.asList(playersArray);
+        playersList = StreamSupport.stream(playersList).sorted((a, b) -> b.score - a.score).collect(Collectors.toList());
+
         ArrayList<RenegadeServerStatusPlayer> players = new ArrayList<>(playersList);
 
-        java8.lang.Iterables.removeIf(players, player -> (player.nick.equals("GDI") || player.nick.equals("Nod") ));
+        Iterables.removeIf(players, player -> (player.nick.equals("GDI") || player.nick.equals("Nod") ));
 
         return new RenegadeServerStatus(name, map, remaining, players.size(), maxPlayers, started, password, teams, players);
     }

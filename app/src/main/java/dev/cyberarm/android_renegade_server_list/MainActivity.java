@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         container = findViewById(R.id.container);
         refresh = findViewById(R.id.refresh);
+        refresh.setRefreshing(true);
 
         if (!AppSync.appInitialized) {
             AppSync.initialize(getFilesDir());
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 populateServerList(AppSync.serverList);
-                                refresh.setRefreshing(false);
                             }
                         });
                     }
@@ -104,23 +104,7 @@ public class MainActivity extends AppCompatActivity {
             TextView hostname = layout.findViewById(R.id.server_hostname);
             hostname.setText("" + (server.status.password ? "\uD83D\uDD12 " : "") + server.status.name);
 
-            switch (server.game) {
-                case "ia":
-                    gameIcon.setImageResource(R.drawable.ia_icon);
-                    break;
-                case "tsr":
-                    gameIcon.setImageResource(R.drawable.tsr_icon);
-                    break;
-                case "apb":
-                    gameIcon.setImageResource(R.drawable.apb_icon);
-                    break;
-                case "ecw":
-                    gameIcon.setImageResource(R.drawable.ecw_icon);
-                    break;
-                default:
-                    gameIcon.setImageResource((R.drawable.ren_icon));
-                    break;
-            }
+            gameIcon.setImageResource(AppSync.game_icon(server.game));
 
             TextView mapname = layout.findViewById(R.id.server_mapname);
             mapname.setText(server.status.name);
@@ -131,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
             container.addView(layout);
             i++;
         }
+
+        refresh.setRefreshing(false);
     }
 
     @Override
@@ -159,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 populateServerList(AppSync.serverList);
-                                refresh.setRefreshing(false);
                             }
                         });
                     }

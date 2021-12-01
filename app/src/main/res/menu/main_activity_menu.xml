@@ -2,13 +2,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/action_refresh"
-        android:icon="@android:drawable/stat_notify_sync"
+        android:icon="@drawable/resource_return"
         android:orderInCategory="100"
         android:title="Refresh"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/gear"
         android:title="Settings"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

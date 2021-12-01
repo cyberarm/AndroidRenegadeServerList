@@ -2,9 +2,11 @@ package dev.cyberarm.android_renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -13,12 +15,16 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
+import java8.util.Comparators;
+import java8.util.stream.Collector;
+import java8.util.stream.StreamSupport;
 
 public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
@@ -44,13 +50,15 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         TextView map = findViewById(R.id.server_map);
         TextView region = findViewById(R.id.server_region);
         TextView players = findViewById(R.id.server_players);
-        Button website = findViewById(R.id.server_website);
+        ImageView gameIcon = findViewById(R.id.game_icon);
+        ImageView gameBalanceIcon = findViewById(R.id.game_balance_icon);
 
         map.setText(renegadeServer.status.map);
         region.setText(renegadeServer.region);
         players.setText("" + renegadeServer.status.numPlayers + "/" + renegadeServer.status.maxPlayers);
 
-        website.setVisibility(View.GONE);
+        gameIcon.setImageResource(AppSync.game_icon(renegadeServer.game));
+        estimateGameBalance(gameBalanceIcon);
 
         playerInfo.removeAllViews();
 
@@ -77,6 +85,48 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
 
             playerInfo.addView(layout);
             i++;
+        }
+    }
+
+    private void estimateGameBalance(ImageView imageView) {
+        // Do stuff
+        imageView.setImageResource(R.drawable.question);
+
+        double team_0_score = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
+        double team_1_score = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
+
+        double ratio = 1.0 / (team_0_score / team_1_score);
+
+        if (renegadeServer.status.players.size() < 20 && !renegadeServer.game.equals("ren")) {
+            imageView.setImageResource(R.drawable.cross);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_red), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText("Probably too few players for a balanced game");
+            }
+        } else if (team_0_score + team_1_score < 2_500) {
+            imageView.setImageResource(R.drawable.question);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.gray), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText("Score to low to estimate game balance");
+            }
+        } else if (ratio >= 0.75 || ratio <= 1.25) {
+            imageView.setImageResource(R.drawable.checkmark);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText("Game seems balanced based on score");
+            }
+        } else if (ratio < 0.75) {
+            imageView.setImageResource(R.drawable.arrow_left);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.unbalanced_orange), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText(renegadeServer.status.teams.get(0).name + " is winning significantly");
+            }
+        } else {
+            imageView.setImageResource(R.drawable.arrow_right);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.unbalanced_orange), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText(renegadeServer.status.teams.get(1).name + " is winning significantly");
+            }
         }
     }
 

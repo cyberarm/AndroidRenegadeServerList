@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_orange">#ff5500</color>
+    <color name="primary_orange">#dd5500</color>
     <color name="secondary_orange">#aa4400</color>
-    <color name="alternate_primary_orange">#ff5500</color>
+    <color name="alternate_primary_orange">#dd5500</color>
     <color name="alternate_secondary_orange">#aa4400</color>
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-    <color name="odd">#CBCBCB</color>
-    <color name="odd_dark">#6D6D6D</color>
+    <color name="black">#252525</color>
+    <color name="true_black">#000000</color>
+    <color name="charcoal">#151515</color>
+    <color name="odd">#252525</color>
+    <color name="odd_dark">#252525</color>
+    <color name="green">#008000</color>
+    <color name="gray">#444444</color>
+    <color name="dark_red">#600000</color>
+    <color name="unbalanced_orange">#dd8800</color>
 </resources>
