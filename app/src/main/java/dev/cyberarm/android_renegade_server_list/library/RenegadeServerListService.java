@@ -84,11 +84,11 @@ public class RenegadeServerListService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
-            channel.setDescription("");
+            channel.setDescription("Used for creating foreground server notification icon");
 
             int importance_b = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel_b = new NotificationChannel(CHANNEL_ID_NOISY, CHANNEL_ID_NOISY, importance_b);
-            channel_b.setDescription("");
+            channel_b.setDescription("Used for notifying server changes");
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
@@ -197,10 +197,14 @@ public class RenegadeServerListService extends Service {
         String notificationBody = message.toString().trim();
 
         if (notificationBody.length() > 0) {
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle("Renegade Server List")
                     .setContentText(notificationBody)
+                    .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(notificationBody))
