@@ -16,7 +16,7 @@
         <service
             android:name="dev.cyberarm.android_renegade_server_list.library.RenegadeServerListService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity android:name="dev.cyberarm.android_renegade_server_list.ServerSettingsActivity" />
         <activity android:name="dev.cyberarm.android_renegade_server_list.AppSettingsActivity" />
