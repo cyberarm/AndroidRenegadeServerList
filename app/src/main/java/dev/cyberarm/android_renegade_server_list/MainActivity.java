@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             gameIcon.setImageResource(AppSync.game_icon(server.game));
 
             TextView mapname = layout.findViewById(R.id.server_mapname);
-            mapname.setText(server.status.name);
+            mapname.setText(server.status.map);
 
             TextView players = layout.findViewById(R.id.server_players);
             players.setText("" + server.status.numPlayers + "/" + server.status.maxPlayers);

@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
@@ -52,13 +54,33 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         TextView players = findViewById(R.id.server_players);
         ImageView gameIcon = findViewById(R.id.game_icon);
         ImageView gameBalanceIcon = findViewById(R.id.game_balance_icon);
+        TextView team_0_name = findViewById(R.id.team_0_name);
+        TextView team_0_score = findViewById(R.id.team_0_score);
+        TextView team_1_name = findViewById(R.id.team_1_name);
+        TextView team_1_score = findViewById(R.id.team_1_score);
+        TextView scoreRatio = findViewById(R.id.score_ratio);
+
+        double team0TotalScore = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
+        double team1TotalScore = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
+        double ratio = 1.0 / (team0TotalScore / team1TotalScore);
+        // floating point divide by zero
+        if (Double.isNaN(ratio)) {
+            ratio = 1.0;
+        }
 
         map.setText(renegadeServer.status.map);
         region.setText(renegadeServer.region);
-        players.setText("" + renegadeServer.status.numPlayers + "/" + renegadeServer.status.maxPlayers);
+        players.setText(String.format(Locale.US, "%d/%d", renegadeServer.status.numPlayers, renegadeServer.status.maxPlayers));
+
+        team_0_name.setText(renegadeServer.status.teams.get(0).name);
+        team_0_score.setText(String.format(Locale.US,"%,.0f", team0TotalScore));
+        team_1_name.setText(renegadeServer.status.teams.get(1).name);
+        team_1_score.setText(String.format(Locale.US,"%,.0f", team1TotalScore));
+        scoreRatio.setText(String.format(Locale.US,"%.2f", ratio));
+
 
         gameIcon.setImageResource(AppSync.game_icon(renegadeServer.game));
-        estimateGameBalance(gameBalanceIcon);
+        estimateGameBalance(gameBalanceIcon, team0TotalScore, team1TotalScore, ratio);
 
         playerInfo.removeAllViews();
 
@@ -79,23 +101,18 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
             TextView deaths = layout.findViewById(R.id.deaths);
             team.setText(renegadeServer.status.teams.get(player.team).name);
             name.setText(player.nick);
-            score.setText("" + player.score);
-            kills.setText("" + player.kills);
-            deaths.setText("" + player.deaths);
+            score.setText(String.format(Locale.US, "%,d", player.score));
+            kills.setText(String.format(Locale.US, "%,d", player.kills));
+            deaths.setText(String.format(Locale.US, "%,d", player.deaths));
 
             playerInfo.addView(layout);
             i++;
         }
     }
 
-    private void estimateGameBalance(ImageView imageView) {
+    private void estimateGameBalance(ImageView imageView, double team_0_score, double team_1_score, double ratio) {
         // Do stuff
         imageView.setImageResource(R.drawable.question);
-
-        double team_0_score = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
-        double team_1_score = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
-
-        double ratio = 1.0 / (team_0_score / team_1_score);
 
         if (renegadeServer.status.players.size() < 20 && !renegadeServer.game.equals("ren")) {
             imageView.setImageResource(R.drawable.cross);
@@ -109,23 +126,23 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 imageView.setTooltipText("Score to low to estimate game balance");
             }
-        } else if (ratio >= 0.75 || ratio <= 1.25) {
+        } else if (ratio >= 0.75 && ratio <= 1.25) {
             imageView.setImageResource(R.drawable.checkmark);
             imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 imageView.setTooltipText("Game seems balanced based on score");
             }
         } else if (ratio < 0.75) {
-            imageView.setImageResource(R.drawable.arrow_left);
-            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.unbalanced_orange), android.graphics.PorterDuff.Mode.MULTIPLY);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                imageView.setTooltipText(renegadeServer.status.teams.get(0).name + " is winning significantly");
-            }
-        } else {
             imageView.setImageResource(R.drawable.arrow_right);
             imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.unbalanced_orange), android.graphics.PorterDuff.Mode.MULTIPLY);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                imageView.setTooltipText(renegadeServer.status.teams.get(1).name + " is winning significantly");
+                imageView.setTooltipText(renegadeServer.status.teams.get(0).name + " are winning significantly");
+            }
+        } else {
+            imageView.setImageResource(R.drawable.arrow_left);
+            imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.unbalanced_orange), android.graphics.PorterDuff.Mode.MULTIPLY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imageView.setTooltipText(renegadeServer.status.teams.get(1).name + " are winning significantly");
             }
         }
     }

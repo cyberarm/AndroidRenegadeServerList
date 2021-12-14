@@ -67,7 +67,7 @@ public class RenegadeServerListService extends Service {
 
     private void foregroundify() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
@@ -189,7 +189,7 @@ public class RenegadeServerListService extends Service {
 
             for (String player : joinedPlayers) {
                 if (usernames.contains(player)) {
-                    message.append(server.status.name + " player joined: " + player + "\n");
+                    message.append(server.status.name).append(" player joined: ").append(player).append("\n");
                 }
             }
         }
@@ -198,7 +198,7 @@ public class RenegadeServerListService extends Service {
 
         if (notificationBody.length() > 0) {
             Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
                     .setSmallIcon(R.drawable.app_icon)
