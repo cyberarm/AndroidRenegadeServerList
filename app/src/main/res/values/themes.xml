@@ -15,7 +15,6 @@
         
         <item name="buttonStyle">@style/Button</item>
         <item name="android:buttonStyleToggle">@style/ToggleButton</item>
-<!--        <item name="editTextStyle">@style/TextInput</item>-->
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
@@ -29,7 +28,7 @@
     <style name="ToggleButton" parent="android:Widget.Material.Button.Toggle">
         <item name="android:background">@drawable/toggle_button</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingLeft">@dimen/button_padding_left</item>
         <item name="android:paddingRight">@dimen/button_padding_right</item>

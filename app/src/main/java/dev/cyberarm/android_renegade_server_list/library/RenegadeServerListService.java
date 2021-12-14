@@ -141,6 +141,10 @@ public class RenegadeServerListService extends Service {
             ArrayList<String> mapnames = AppSync.settings.globalServerSettings.notifyMapNames;
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
 
+            boolean checkedPlayerHasJoined = false, checkedPlayerCountMeant = false, checkedServerMapActive = false;
+
+            StringBuilder serverMessage = new StringBuilder();
+
             // Skip if user is in-game
             if (StreamSupport.stream(usernames).anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
                 continue;
@@ -163,7 +167,8 @@ public class RenegadeServerListService extends Service {
             }
 
             if (server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
-                message.append(server.status.name + " has " + server.status.numPlayers + " players\n");
+                checkedPlayerCountMeant = true;
+                serverMessage.append(server.status.name + " has " + server.status.numPlayers + " players\n");
             }
 
             if (!server.status.map.equals(oldDataServer.status.map)) {
@@ -173,7 +178,9 @@ public class RenegadeServerListService extends Service {
                     }
 
                     if (server.status.map.contains(mapname)) {
-                        message.append(server.status.name + " current map: " + server.status.map + "\n");
+
+                        checkedServerMapActive = true;
+                        serverMessage.append(server.status.name + " current map: " + server.status.map + "\n");
                         break;
                     }
                 }
@@ -189,8 +196,21 @@ public class RenegadeServerListService extends Service {
 
             for (String player : joinedPlayers) {
                 if (usernames.contains(player)) {
-                    message.append(server.status.name).append(" player joined: ").append(player).append("\n");
+                    checkedPlayerHasJoined = true;
+                    serverMessage.append(server.status.name).append(" player joined: ").append(player).append("\n");
                 }
+            }
+
+            if (AppSync.settings.globalServerSettings.notifyRequireMultipleConditions || serverSettings.notifyRequireMultipleConditions) {
+                if (
+                        (checkedPlayerHasJoined && checkedPlayerCountMeant) ||
+                        (checkedServerMapActive && checkedPlayerCountMeant) ||
+                        (checkedPlayerHasJoined && checkedServerMapActive)
+                ) {
+                    message.append(serverMessage.toString().trim());
+                }
+            } else {
+                message.append(serverMessage.toString().trim());
             }
         }
 
