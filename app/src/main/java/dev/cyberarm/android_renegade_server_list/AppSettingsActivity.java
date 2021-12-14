@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -26,14 +27,16 @@ import java.util.ArrayList;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
 import dev.cyberarm.android_renegade_server_list.library.Settings;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 public class AppSettingsActivity extends AppCompatActivity {
     private static final int EXPORT_FILE = 1;
     private static final int IMPORT_FILE = 2;
     private static final String TAG = "AppSettingsActivity";
-    private static final String DEFAULT_SETTINGS_NAME = "rensrvlist_settings.json";
+    private static final String DEFAULT_SETTINGS_NAME = "renegade_server_list_settings.json";
     private static final String MIME_TYPE = "application/json";
-    Button cncNetWebsite;
+    Button w3dHubWebsite;
     EditText renegadeUsername;
     TextView autoRefreshInterval;
     ToggleButton serviceAutoStart;
@@ -41,6 +44,8 @@ public class AppSettingsActivity extends AppCompatActivity {
     TextView notifyPlayerCount;
     TextView notifyMaps;
     TextView notifyUsernames;
+
+    Switch notifyRequireMultipleConditions;
 
     Button settingsExport, settingsImport;
 
@@ -51,8 +56,8 @@ public class AppSettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("App Settings");
 
-        cncNetWebsite = findViewById(R.id.w3dhub_website);
-        cncNetWebsite.setOnClickListener(view -> {
+        w3dHubWebsite = findViewById(R.id.w3dhub_website);
+        w3dHubWebsite.setOnClickListener(view -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://w3dhub.com"));
             startActivity(browserIntent);
         });
@@ -64,6 +69,8 @@ public class AppSettingsActivity extends AppCompatActivity {
         notifyPlayerCount = findViewById(R.id.server_player_count);
         notifyMaps = findViewById(R.id.server_mapnames);
         notifyUsernames = findViewById(R.id.server_usernames);
+
+        notifyRequireMultipleConditions = findViewById(R.id.server_require_multiple_conditions);
 
         settingsExport = findViewById(R.id.settings_export);
         settingsImport = findViewById(R.id.settings_import);
@@ -97,14 +104,18 @@ public class AppSettingsActivity extends AppCompatActivity {
 
     private void loadSettings() {
         renegadeUsername.setText(AppSync.settings.renegadeUsername);
-        autoRefreshInterval.setText("" + AppSync.settings.serviceAutoRefreshInterval);
+        autoRefreshInterval.setText(String.format("%d", AppSync.settings.serviceAutoRefreshInterval));
         serviceAutoStart.setChecked(AppSync.settings.serviceAutoStartAtBoot);
 
-        notifyPlayerCount.setText("" + AppSync.settings.globalServerSettings.notifyPlayerCount);
+        notifyPlayerCount.setText(String.format("%d", AppSync.settings.globalServerSettings.notifyPlayerCount));
 
-        // TODO: Fix String.join as is Oreo method... 😤😤
-        notifyMaps.setText(String.join(", ", AppSync.settings.globalServerSettings.notifyMapNames));
-        notifyUsernames.setText(String.join(", ", AppSync.settings.globalServerSettings.notifyUsernames));
+        String notifyMapsString = StreamSupport.stream(AppSync.settings.globalServerSettings.notifyMapNames)
+                .collect(Collectors.joining(", "));
+        String notifyUsernamesString = StreamSupport.stream(AppSync.settings.globalServerSettings.notifyUsernames)
+                .collect(Collectors.joining(", "));
+        notifyMaps.setText(notifyMapsString);
+        notifyUsernames.setText(notifyUsernamesString);
+        notifyRequireMultipleConditions.setChecked(AppSync.settings.globalServerSettings.notifyRequireMultipleConditions);
     }
 
     private void saveSettings() {
@@ -113,6 +124,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         AppSync.settings.serviceAutoStartAtBoot = serviceAutoStart.isChecked();
 
         AppSync.settings.globalServerSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCount.getText().toString());
+        AppSync.settings.globalServerSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();
 
         String[] maps = notifyMaps.getText().toString().split(",");
         String[] usernames = notifyUsernames.getText().toString().split(",");

@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
 import dev.cyberarm.android_renegade_server_list.library.ServerSettings;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 public class ServerSettingsActivity extends AppCompatActivity {
 
@@ -23,6 +26,8 @@ public class ServerSettingsActivity extends AppCompatActivity {
     TextView notifyMaps;
     TextView notifyUsernames;
 
+    Switch notifyRequireMultipleConditions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,24 +36,34 @@ public class ServerSettingsActivity extends AppCompatActivity {
         serverID = getIntent().getStringExtra("server_id");
         serverSettings = AppSync.serverSettings(serverID);
 
-        getSupportActionBar().setTitle("Server Settings");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Server Settings");
+        }
 
         notifyPlayerCount = findViewById(R.id.server_player_count);
         notifyMaps = findViewById(R.id.server_mapnames);
         notifyUsernames = findViewById(R.id.server_usernames);
 
+        notifyRequireMultipleConditions = findViewById(R.id.server_require_multiple_conditions);
+
         loadSettings();
     }
 
     private void loadSettings() {
-        notifyPlayerCount.setText("" + serverSettings.notifyPlayerCount);
+        notifyPlayerCount.setText(String.format("%d", serverSettings.notifyPlayerCount));
 
-        notifyMaps.setText(String.join(", ", serverSettings.notifyMapNames));
-        notifyUsernames.setText(String.join(", ", serverSettings.notifyUsernames));
+        String notifyMapsString = StreamSupport.stream(serverSettings.notifyMapNames)
+                .collect(Collectors.joining(", "));
+        String notifyUsernamesString = StreamSupport.stream(serverSettings.notifyUsernames)
+                .collect(Collectors.joining(", "));
+        notifyMaps.setText(notifyMapsString);
+        notifyUsernames.setText(notifyUsernamesString);
+        notifyRequireMultipleConditions.setChecked(serverSettings.notifyRequireMultipleConditions);
     }
 
     private void saveSettings() {
         serverSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCount.getText().toString());
+        serverSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();
 
         String[] maps = notifyMaps.getText().toString().split(",");
         String[] usernames = notifyUsernames.getText().toString().split(",");

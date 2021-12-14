@@ -25,6 +25,9 @@ public class ServerSettingsDeserializer implements JsonDeserializer<ServerSettin
         ArrayList<String> notifyMapNames = new ArrayList<>(Arrays.asList(mapNames));
         ArrayList<String> notifyUsernames = new ArrayList<>(Arrays.asList(usernames));
 
-        return new ServerSettings(ID, notifyPlayerCount, notifyMapNames, notifyUsernames);
+        JsonElement aBoolean = jsonObject.get("notifyRequireMultipleConditions");
+        final boolean notifyRequireMultipleConditions = aBoolean != null && aBoolean.getAsBoolean();
+
+        return new ServerSettings(ID, notifyPlayerCount, notifyMapNames, notifyUsernames, notifyRequireMultipleConditions);
     }
 }

@@ -87,7 +87,7 @@ public class AppSync {
             settings = gson().fromJson(readFromFile(configFile.getPath()), Settings.class);
         } else {
             settings = new Settings("", 0, false,
-                                    new ServerSettings("", 0, new ArrayList<>(), new ArrayList<>()),
+                                    new ServerSettings("", 0, new ArrayList<>(), new ArrayList<>(), false),
                                     new ArrayList<>());
             saveSettings();
         }
@@ -224,7 +224,7 @@ public class AppSync {
             }
         }
 
-        ServerSettings serverSettings = new ServerSettings(serverID, 0, new ArrayList<>(), new ArrayList<>());
+        ServerSettings serverSettings = new ServerSettings(serverID, 0, new ArrayList<>(), new ArrayList<>(), false);
         settings.serverSettings.add(serverSettings);
 
         return serverSettings;
