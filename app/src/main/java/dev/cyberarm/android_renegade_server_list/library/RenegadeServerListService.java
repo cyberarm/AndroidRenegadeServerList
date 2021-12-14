@@ -50,12 +50,7 @@ public class RenegadeServerListService extends Service {
 
         runService = true;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runUpdater();
-            }
-        }).start();
+        new Thread(this::runUpdater).start();
 
         return START_STICKY;
     }
@@ -168,7 +163,7 @@ public class RenegadeServerListService extends Service {
 
             if (server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
                 checkedPlayerCountMeant = true;
-                serverMessage.append(server.status.name + " has " + server.status.numPlayers + " players\n");
+                serverMessage.append(server.status.name).append(" has ").append(server.status.numPlayers).append(" players\n");
             }
 
             if (!server.status.map.equals(oldDataServer.status.map)) {
@@ -180,7 +175,7 @@ public class RenegadeServerListService extends Service {
                     if (server.status.map.contains(mapname)) {
 
                         checkedServerMapActive = true;
-                        serverMessage.append(server.status.name + " current map: " + server.status.map + "\n");
+                        serverMessage.append(server.status.name).append(" current map: ").append(server.status.map).append("\n");
                         break;
                     }
                 }
@@ -192,7 +187,7 @@ public class RenegadeServerListService extends Service {
                 Iterables.removeIf(joinedPlayers, obj -> obj.equals(player.nick));
             }
 
-            Iterables.removeIf(joinedPlayers, obj -> obj.toLowerCase().equals("gdi") || obj.toLowerCase().equals("nod"));
+            Iterables.removeIf(joinedPlayers, obj -> obj.equalsIgnoreCase("gdi") || obj.equalsIgnoreCase("nod"));
 
             for (String player : joinedPlayers) {
                 if (usernames.contains(player)) {
