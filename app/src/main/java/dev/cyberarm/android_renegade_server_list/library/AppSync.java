@@ -1,10 +1,17 @@
 package dev.cyberarm.android_renegade_server_list.library;
 
+import static android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,7 +93,7 @@ public class AppSync {
         if (configFile.exists()) {
             settings = gson().fromJson(readFromFile(configFile.getPath()), Settings.class);
         } else {
-            settings = new Settings("", 0, false,
+            settings = new Settings("", 0, false, false,
                                     new ServerSettings("", 0, new ArrayList<>(), new ArrayList<>(), false),
                                     new ArrayList<>());
             saveSettings();
@@ -131,7 +138,7 @@ public class AppSync {
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 
-    public static void fetchList(Callback callback, boolean forceFetch) {
+    public static void fetchList(Context context, Callback callback, boolean forceFetch) {
         if (System.currentTimeMillis() - lastSuccessfulFetch >= softFetchLimit || forceFetch) {
         } else {
             Log.i(TAG, "Skipping fetch.");
@@ -143,6 +150,13 @@ public class AppSync {
 
         if (lockNetwork) {
             return;
+        }
+
+        if (!AppSync.settings.refreshOnMeteredConnections) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager.isActiveNetworkMetered()) {
+                return;
+            }
         }
 
         lockNetwork = true;

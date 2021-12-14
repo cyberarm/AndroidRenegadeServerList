@@ -23,9 +23,11 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
         final boolean serviceAutoStartAtBoot = jsonObject.get("service_auto_start_at_boot").getAsBoolean();
         final ServerSettings globalServerSettings = context.deserialize(jsonObject.get("global_server_settings"), ServerSettings.class);
         final ServerSettings[] _serverSettings = context.deserialize(jsonObject.get("server_settings"), ServerSettings[].class);
+        JsonElement aBoolean = jsonObject.get("refresh_on_metered_connections");
+        final boolean refreshOnMeteredConnections = aBoolean != null && aBoolean.getAsBoolean();
 
         ArrayList<ServerSettings> serverSettings = new ArrayList<>(Arrays.asList(_serverSettings));
 
-        return new Settings(renegadeUsername, serviceAutoRefreshInterval, serviceAutoStartAtBoot, globalServerSettings, serverSettings);
+        return new Settings(renegadeUsername, serviceAutoRefreshInterval, serviceAutoStartAtBoot, refreshOnMeteredConnections, globalServerSettings, serverSettings);
     }
 }

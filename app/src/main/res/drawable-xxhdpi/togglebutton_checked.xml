@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:top="@dimen/button_margin_top"
+        android:bottom="@dimen/button_margin_bottom"
+        android:left="@dimen/button_margin_left"
+        android:right="@dimen/button_margin_right">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primary_orange" />
+            <corners android:radius="0dp" />
+            <padding
+                android:top="@dimen/button_padding_top"
+                android:bottom="@dimen/button_padding_bottom"
+                android:left="@dimen/button_padding_left"
+                android:right="@dimen/button_padding_right" />
+        </shape>
+    </item>
+    <item
+        android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <size android:height="4dp"/>
+            <solid android:color="@color/white"/>
+            <corners android:radius="0dp"/>
+        </shape>
+    </item>
+</layer-list>

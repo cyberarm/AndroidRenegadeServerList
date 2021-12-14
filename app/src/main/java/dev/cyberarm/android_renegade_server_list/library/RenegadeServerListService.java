@@ -102,7 +102,7 @@ public class RenegadeServerListService extends Service {
                 if (System.currentTimeMillis() - lastTrigger > Math.max(AppSync.softFetchLimit, AppSync.settings.serviceAutoRefreshInterval * 1000.0)) {
                     lastTrigger = System.currentTimeMillis();
 
-                    AppSync.fetchList(new Callback() {
+                    AppSync.fetchList(getApplicationContext(), new Callback() {
                         @Override
                         public void run() {
                             evaluate();

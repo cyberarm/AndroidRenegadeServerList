@@ -2,6 +2,7 @@ package dev.cyberarm.android_renegade_server_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
     TextView notifyMaps;
     TextView notifyUsernames;
 
-    Switch notifyRequireMultipleConditions;
+    ToggleButton notifyRequireMultipleConditions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

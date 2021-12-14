@@ -3,6 +3,7 @@ package dev.cyberarm.android_renegade_server_list;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -39,13 +40,11 @@ public class AppSettingsActivity extends AppCompatActivity {
     Button w3dHubWebsite;
     EditText renegadeUsername;
     TextView autoRefreshInterval;
-    ToggleButton serviceAutoStart;
+    ToggleButton serviceAutoStart, refreshOnMeteredConnections, notifyRequireMultipleConditions;
 
     TextView notifyPlayerCount;
     TextView notifyMaps;
     TextView notifyUsernames;
-
-    Switch notifyRequireMultipleConditions;
 
     Button settingsExport, settingsImport;
 
@@ -65,6 +64,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         renegadeUsername = findViewById(R.id.username);
         autoRefreshInterval = findViewById(R.id.auto_refresh_interval);
         serviceAutoStart = findViewById(R.id.run_at_startup);
+        refreshOnMeteredConnections = findViewById(R.id.refresh_on_metered_connections);
 
         notifyPlayerCount = findViewById(R.id.server_player_count);
         notifyMaps = findViewById(R.id.server_mapnames);
@@ -106,6 +106,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         renegadeUsername.setText(AppSync.settings.renegadeUsername);
         autoRefreshInterval.setText(String.format("%d", AppSync.settings.serviceAutoRefreshInterval));
         serviceAutoStart.setChecked(AppSync.settings.serviceAutoStartAtBoot);
+        refreshOnMeteredConnections.setChecked(AppSync.settings.refreshOnMeteredConnections);
 
         notifyPlayerCount.setText(String.format("%d", AppSync.settings.globalServerSettings.notifyPlayerCount));
 
@@ -122,6 +123,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         AppSync.settings.renegadeUsername = renegadeUsername.getText().toString();
         AppSync.settings.serviceAutoRefreshInterval = Integer.parseInt(autoRefreshInterval.getText().toString());
         AppSync.settings.serviceAutoStartAtBoot = serviceAutoStart.isChecked();
+        AppSync.settings.refreshOnMeteredConnections = refreshOnMeteredConnections.isChecked();
 
         AppSync.settings.globalServerSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCount.getText().toString());
         AppSync.settings.globalServerSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();

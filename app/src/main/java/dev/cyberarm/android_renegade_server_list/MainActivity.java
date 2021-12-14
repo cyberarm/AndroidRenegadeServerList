@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(new AppOnBootReceiver(), new IntentFilter(Intent.ACTION_BOOT_COMPLETED));
 
-        AppSync.fetchList(new Callback() {
+        AppSync.fetchList(getApplicationContext(), new Callback() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                AppSync.fetchList(new Callback() {
+                AppSync.fetchList(getApplicationContext(), new Callback() {
                     @Override
                     public void run() {
                         runOnUiThread(new Runnable() {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 refresh.setRefreshing(true);
 
-                AppSync.fetchList(new Callback() {
+                AppSync.fetchList(getApplicationContext(), new Callback() {
                     @Override
                     public void run() {
                         runOnUiThread(new Runnable() {

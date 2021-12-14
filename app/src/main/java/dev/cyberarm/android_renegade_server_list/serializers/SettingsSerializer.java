@@ -19,6 +19,7 @@ public class SettingsSerializer implements JsonSerializer<Settings> {
         container.add("renegade_username", new JsonPrimitive(src.renegadeUsername));
         container.add("service_auto_refresh_interval", new JsonPrimitive(src.serviceAutoRefreshInterval));
         container.add("service_auto_start_at_boot", new JsonPrimitive(src.serviceAutoStartAtBoot));
+        container.add("refresh_on_metered_connections", new JsonPrimitive(src.refreshOnMeteredConnections));
         container.add("global_server_settings", context.serialize(src.globalServerSettings, ServerSettings.class));
         container.add("server_settings", context.serialize(src.serverSettings.toArray(), ServerSettings[].class));
 
