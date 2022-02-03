@@ -161,14 +161,14 @@ public class RenegadeServerListService extends Service {
                 usernames = new ArrayList<>(set);
             }
 
-            if (server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
+            if (notifyPlayerCount != 0 && server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
                 checkedPlayerCountMeant = true;
                 serverMessage.append(server.status.name).append(" has ").append(server.status.numPlayers).append(" players\n");
             }
 
             if (!server.status.map.equals(oldDataServer.status.map)) {
                 for(String mapname : mapnames) {
-                    if (mapname.length() == 0) {
+                    if (mapname.trim().length() == 0) {
                         continue;
                     }
 

@@ -8,6 +8,7 @@ import androidx.core.view.GestureDetectorCompat;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoField;
+import java.util.Date;
 import java.util.Locale;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
@@ -45,13 +54,15 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
     }
 
     private void populateServerInfo() {
-        renegadeServer = AppSync.serverList.get(getIntent().getIntExtra("server_index", 0));
+        renegadeServer = AppSync.interfaceServerList.get(getIntent().getIntExtra("server_index", 0));
 
         getSupportActionBar().setTitle(renegadeServer.status.name);
         LinearLayout playerInfo = findViewById(R.id.player_info);
         TextView map = findViewById(R.id.server_map);
         TextView region = findViewById(R.id.server_region);
         TextView players = findViewById(R.id.server_players);
+        TextView time_elapsed = findViewById(R.id.server_time);
+        TextView time_left = findViewById(R.id.server_time_left);
         ImageView gameIcon = findViewById(R.id.game_icon);
         ImageView gameBalanceIcon = findViewById(R.id.game_balance_icon);
         TextView team_0_name = findViewById(R.id.team_0_name);
@@ -60,22 +71,49 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         TextView team_1_score = findViewById(R.id.team_1_score);
         TextView scoreRatio = findViewById(R.id.score_ratio);
 
-        double team0TotalScore = renegadeServer.status.teams.get(0).score; // StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
-        double team1TotalScore = renegadeServer.status.teams.get(1).score; // StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
+        // Some servers don't provide a non zero value for team score...
+        double team0TotalScore = renegadeServer.status.teams.get(0).score > 0 ? renegadeServer.status.teams.get(0).score : StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
+        double team1TotalScore = renegadeServer.status.teams.get(1).score > 0 ? renegadeServer.status.teams.get(1).score : StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
         double ratio = 1.0 / (team0TotalScore / team1TotalScore);
         // floating point divide by zero
         if (Double.isNaN(ratio)) {
             ratio = 1.0;
         }
 
+        SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSz");
+        Date date = null;
+        long diff = 0, hours = 0, minutes = 0, seconds = 0;
+        try {
+            Log.i(TAG, renegadeServer.status.started);
+            date = inFormat.parse(renegadeServer.status.started);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date != null) {
+            Date now = new Date();
+            diff = now.getTime() - date.getTime();
+            hours = diff / (1000 * 60 * 60 * 24) % 365;
+            minutes = diff / (1000 * 60) % 60;
+            seconds = diff / (1000) % 60;
+        }
+
         map.setText(renegadeServer.status.map);
         region.setText(renegadeServer.region);
         players.setText(String.format(Locale.US, "%d/%d", renegadeServer.status.numPlayers, renegadeServer.status.maxPlayers));
+        time_elapsed.setText(date != null ? String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds) : "---");
+        time_left.setText(renegadeServer.status.remaining);
 
-        team_0_name.setText(renegadeServer.status.teams.get(0).name);
+        team_0_name.setText(
+                String.format(Locale.US, "%s (%d)", renegadeServer.status.teams.get(0).name,
+                        StreamSupport.stream(renegadeServer.status.players).filter(player -> player.team == 0).count()));
         team_0_score.setText(String.format(Locale.US,"%,.0f", team0TotalScore));
-        team_1_name.setText(renegadeServer.status.teams.get(1).name);
+
+        team_1_name.setText(
+                String.format(Locale.US, "%s (%d)", renegadeServer.status.teams.get(1).name,
+                        StreamSupport.stream(renegadeServer.status.players).filter(player -> player.team == 1).count()));
         team_1_score.setText(String.format(Locale.US,"%,.0f", team1TotalScore));
+
         scoreRatio.setText(String.format(Locale.US,"%.2f", ratio));
 
 

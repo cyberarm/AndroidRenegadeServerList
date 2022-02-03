@@ -27,7 +27,7 @@
             tools:srcCompat="@drawable/ren_icon" />
 
         <LinearLayout
-            android:layout_width="64dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -51,6 +51,20 @@
                 android:layout_height="wrap_content"
                 android:text="Players"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time Left"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +76,7 @@
             <TextView
                 android:id="@+id/server_map"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:text="TextView" />
 
             <TextView
@@ -73,6 +87,18 @@
 
             <TextView
                 android:id="@+id/server_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/server_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/server_time_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -188,7 +214,7 @@
 
         <TextView
             android:id="@+id/team"
-            android:layout_width="16dp"
+            android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Team"
