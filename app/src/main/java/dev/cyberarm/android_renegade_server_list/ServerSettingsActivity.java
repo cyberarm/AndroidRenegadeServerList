@@ -64,7 +64,8 @@ public class ServerSettingsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
-        serverSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCount.getText().toString());
+        String notifyPlayerCountValue = notifyPlayerCount.getText().toString().length() == 0 ? "0" : notifyPlayerCount.getText().toString();
+        serverSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCountValue);
         serverSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();
 
         String[] maps = notifyMaps.getText().toString().split(",");

@@ -121,11 +121,13 @@ public class AppSettingsActivity extends AppCompatActivity {
 
     private void saveSettings() {
         AppSync.settings.renegadeUsername = renegadeUsername.getText().toString();
-        AppSync.settings.serviceAutoRefreshInterval = Integer.parseInt(autoRefreshInterval.getText().toString());
+        String autoRefreshIntervalValue = autoRefreshInterval.getText().toString().length() == 0 ? "0" : autoRefreshInterval.getText().toString();
+        AppSync.settings.serviceAutoRefreshInterval = Integer.parseInt(autoRefreshIntervalValue);
         AppSync.settings.serviceAutoStartAtBoot = serviceAutoStart.isChecked();
         AppSync.settings.refreshOnMeteredConnections = refreshOnMeteredConnections.isChecked();
 
-        AppSync.settings.globalServerSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCount.getText().toString());
+        String notifyPlayerCountValue = notifyPlayerCount.getText().toString().length() == 0 ? "0" : notifyPlayerCount.getText().toString();
+        AppSync.settings.globalServerSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCountValue);
         AppSync.settings.globalServerSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();
 
         String[] maps = notifyMaps.getText().toString().split(",");

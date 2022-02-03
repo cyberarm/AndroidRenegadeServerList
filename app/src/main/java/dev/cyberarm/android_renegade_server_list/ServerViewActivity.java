@@ -15,26 +15,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoField;
 import java.util.Date;
 import java.util.Locale;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServerStatusPlayer;
 import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
-import java8.util.Comparators;
-import java8.util.stream.Collector;
 import java8.util.stream.StreamSupport;
 
 public class ServerViewActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -55,6 +48,12 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
 
     private void populateServerInfo() {
         renegadeServer = AppSync.interfaceServerList.get(getIntent().getIntExtra("server_index", 0));
+
+        if (renegadeServer == null) {
+            finish();
+            Toast.makeText(getApplicationContext(), "Failed to find server data in local list.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         getSupportActionBar().setTitle(renegadeServer.status.name);
         LinearLayout playerInfo = findViewById(R.id.player_info);
