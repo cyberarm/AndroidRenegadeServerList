@@ -60,8 +60,8 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         TextView team_1_score = findViewById(R.id.team_1_score);
         TextView scoreRatio = findViewById(R.id.score_ratio);
 
-        double team0TotalScore = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
-        double team1TotalScore = StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
+        double team0TotalScore = renegadeServer.status.teams.get(0).score; // StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 0).mapToDouble(p -> p.score).sum();
+        double team1TotalScore = renegadeServer.status.teams.get(1).score; // StreamSupport.stream(renegadeServer.status.players).filter(p -> p.team == 1).mapToDouble(p -> p.score).sum();
         double ratio = 1.0 / (team0TotalScore / team1TotalScore);
         // floating point divide by zero
         if (Double.isNaN(ratio)) {

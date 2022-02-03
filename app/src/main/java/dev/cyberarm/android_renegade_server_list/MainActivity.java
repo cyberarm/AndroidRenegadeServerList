@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        populateServerList(AppSync.serverList);
+                        AppSync.interfaceServerList = AppSync.serverList;
+                        populateServerList(AppSync.interfaceServerList);
                     }
                 });
             }
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                populateServerList(AppSync.serverList);
+                                AppSync.interfaceServerList = AppSync.serverList;
+                                populateServerList(AppSync.interfaceServerList);
                             }
                         });
                     }
@@ -144,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                populateServerList(AppSync.serverList);
+                                AppSync.interfaceServerList = AppSync.serverList;
+                                populateServerList(AppSync.interfaceServerList);
                             }
                         });
                     }

@@ -43,13 +43,14 @@ import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 public class AppSync {
     static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2"; // "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
     private static final String TAG = "AppSync";
-    private static final String VERSION = "0.1.0";
+    private static final String VERSION = "0.1.1";
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
     public  static final long softFetchLimit = 30_000; // milliseconds
 
     public static ArrayList<RenegadeServer> serverList;
+    public static ArrayList<RenegadeServer> interfaceServerList; // Only updated by MainActivity and used by activities to keep things in logical order
     public static ArrayList<RenegadeServer> lastServerList;
     public static Settings settings;
     public static boolean appInitialized = false;
