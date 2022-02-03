@@ -56,6 +56,7 @@ public class AppSync {
     public static boolean appInitialized = false;
     private static String storageLocation;
     private static String configFilePath;
+    private static long lastInterfaceServerListUpdate = 0;
 
     public static void initialize(File storageLocation) {
         if (appInitialized) {
@@ -264,5 +265,14 @@ public class AppSync {
             default:
                 return R.drawable.ren_icon;
         }
+    }
+
+    public static void updateInterfaceServerList() {
+        lastInterfaceServerListUpdate = System.currentTimeMillis();
+        interfaceServerList = (ArrayList<RenegadeServer>) serverList.clone();
+    }
+
+    public static long getLastInterfaceServerListUpdate() {
+        return lastInterfaceServerListUpdate;
     }
 }

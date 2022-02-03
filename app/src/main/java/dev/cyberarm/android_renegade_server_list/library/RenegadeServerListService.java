@@ -8,12 +8,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 import java8.util.stream.StreamSupport;
 import java8.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class RenegadeServerListService extends Service {
     private static final int ID_B = 2021_02_27;
     private long lastTrigger;
     private boolean runService;
+    private long lastUpdatedServiceNotification = 0;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -61,16 +64,19 @@ public class RenegadeServerListService extends Service {
     }
 
     private void foregroundify() {
+        startForeground(ID, createServiceNotification(0, 0));
+    }
+
+    private Notification createServiceNotification(int totalServerCount, int totalPlayerCount) {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
+                .setContentText(String.format(Locale.US, "Servers: %d   Players: %d", totalServerCount, totalPlayerCount))
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentIntent(pendingIntent);
-        Notification notification = builder.build();
-
-        startForeground(ID, notification);
+        return builder.build();
     }
 
     private void createNotificationChannels() {
@@ -93,6 +99,10 @@ public class RenegadeServerListService extends Service {
 
     private void runUpdater() {
         while(runService) {
+            if (AppSync.getLastInterfaceServerListUpdate() - lastUpdatedServiceNotification >= 1) {
+                updateServiceNotification();
+            }
+
             if (AppSync.settings.serviceAutoRefreshInterval > 0) {
                 if (System.currentTimeMillis() - lastTrigger > Math.max(AppSync.softFetchLimit, AppSync.settings.serviceAutoRefreshInterval * 1000.0)) {
                     lastTrigger = System.currentTimeMillis();
@@ -226,7 +236,19 @@ public class RenegadeServerListService extends Service {
                     .setAutoCancel(true);
 
             NotificationManagerCompat.from(this).notify(ID_B, builder.build());
-
         }
+
+        updateServiceNotification();
+    }
+
+    private void updateServiceNotification() {
+        lastUpdatedServiceNotification = System.currentTimeMillis();
+
+        int totalPlayerCount = StreamSupport.stream(AppSync.serverList).mapToInt(server -> server.status.players.size()).sum();
+        int totalServerCount = AppSync.serverList.size();
+
+        Log.i(TAG, "update service notification: servers: " + totalServerCount + ", players: " + totalPlayerCount);
+        Notification notification = createServiceNotification(totalServerCount, totalPlayerCount);
+        NotificationManagerCompat.from(this).notify(ID, notification);
     }
 }

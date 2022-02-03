@@ -93,7 +93,7 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         if (date != null) {
             Date now = new Date();
             diff = now.getTime() - date.getTime();
-            hours = diff / (1000 * 60 * 60 * 24) % 365;
+            hours = diff / (1000 * 60 * 60);
             minutes = diff / (1000 * 60) % 60;
             seconds = diff / (1000) % 60;
         }
