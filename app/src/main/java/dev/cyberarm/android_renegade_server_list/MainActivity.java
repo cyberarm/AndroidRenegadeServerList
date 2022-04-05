@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         container = findViewById(R.id.container);
         refresh = findViewById(R.id.refresh);
-        refresh.setRefreshing(true);
 
         if (!AppSync.appInitialized) {
             AppSync.initialize(getFilesDir());
@@ -45,31 +44,33 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(new AppOnBootReceiver(), new IntentFilter(Intent.ACTION_BOOT_COMPLETED));
 
-        AppSync.fetchList(getApplicationContext(), new Callback() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+        if (!AppSync.settings.refreshOnMeteredConnections && AppSync.isMeteredConnection(this)) {
+            showConnectivityWarning();
+        } else {
+            refresh.setRefreshing(true);
+
+            AppSync.fetchList(getApplicationContext(), new Callback() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> {
                         AppSync.updateInterfaceServerList();
                         populateServerList(AppSync.interfaceServerList);
-                    }
-                });
-            }
-        }, false);
+                    });
+                }
+            }, false);
+        }
 
-        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        refresh.setOnRefreshListener(() -> {
+            if (!AppSync.settings.refreshOnMeteredConnections && AppSync.isMeteredConnection(this)) {
+                showConnectivityWarning();
+                refresh.setRefreshing(false);
+            } else {
                 AppSync.fetchList(getApplicationContext(), new Callback() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AppSync.updateInterfaceServerList();
-                                populateServerList(AppSync.interfaceServerList);
-                            }
+                        runOnUiThread(() -> {
+                            AppSync.updateInterfaceServerList();
+                            populateServerList(AppSync.interfaceServerList);
                         });
                     }
                 }, true);
@@ -125,6 +126,21 @@ public class MainActivity extends AppCompatActivity {
         refresh.setRefreshing(false);
     }
 
+    public void showConnectivityWarning() {
+        View view = getLayoutInflater().inflate(R.layout.connectivity_notice, null);
+
+        TextView warningView = view.findViewById(R.id.connectivity_notice_message);
+        warningView.setText(
+                "Notice: You appear to be on a metered connection and your settings do not permit updating over a metered connection.\n\n" +
+                "If available, old server list data will be shown.");
+
+        if (AppSync.interfaceServerList != null) {
+            populateServerList(AppSync.interfaceServerList);
+        }
+
+        container.addView(view, 0);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -142,20 +158,24 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_refresh:
-                refresh.setRefreshing(true);
+                if (!AppSync.settings.refreshOnMeteredConnections && AppSync.isMeteredConnection(this)) {
+                    showConnectivityWarning();
+                } else {
+                    refresh.setRefreshing(true);
 
-                AppSync.fetchList(getApplicationContext(), new Callback() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AppSync.updateInterfaceServerList();
-                                populateServerList(AppSync.interfaceServerList);
-                            }
-                        });
-                    }
-                }, true);
+                    AppSync.fetchList(getApplicationContext(), new Callback() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AppSync.updateInterfaceServerList();
+                                    populateServerList(AppSync.interfaceServerList);
+                                }
+                            });
+                        }
+                    }, true);
+                }
                 break;
         }
 

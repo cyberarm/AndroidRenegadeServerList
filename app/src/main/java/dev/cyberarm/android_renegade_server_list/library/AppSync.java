@@ -141,6 +141,12 @@ public class AppSync {
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 
+    public static boolean isMeteredConnection(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.isActiveNetworkMetered();
+    }
+
     public static void fetchList(Context context, Callback callback, boolean forceFetch) {
         if (System.currentTimeMillis() - lastSuccessfulFetch >= softFetchLimit || forceFetch) {
         } else {
@@ -155,11 +161,8 @@ public class AppSync {
             return;
         }
 
-        if (!AppSync.settings.refreshOnMeteredConnections) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager.isActiveNetworkMetered()) {
-                return;
-            }
+        if (!AppSync.settings.refreshOnMeteredConnections && isMeteredConnection(context)) {
+            return;
         }
 
         lockNetwork = true;
