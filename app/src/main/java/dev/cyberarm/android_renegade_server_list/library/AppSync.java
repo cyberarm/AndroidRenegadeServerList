@@ -44,7 +44,7 @@ import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 public class AppSync {
     static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2";
     private static final String TAG = "AppSync";
-    private static final String VERSION = "0.1.1";
+    private static final String VERSION = "0.2.0";
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
@@ -311,7 +311,14 @@ public class AppSync {
     public static void showChangeLog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
-        .setMessage("CHANGE THIS FOR RELEASE")
+        .setMessage(
+                "• Fixed \"Notify only if multiple conditions are met\" setting not saved correctly\n\n" +
+                "• Added centralized overview of individual server settings\n\n" +
+                "• Updated AR's icon and added CWC's icon\n\n" +
+                "• Reverted back to using server_address:port instead of GSH server id to look up saved server settings\n\n" +
+                "• Added notice if active network is metered and refreshing on a metered connection is not allowed in settings\n\n" +
+                "• Added big orange button to quickly remove orphaned server settings"
+        )
         .setCancelable(false)
         .setPositiveButton(
             "OK",
