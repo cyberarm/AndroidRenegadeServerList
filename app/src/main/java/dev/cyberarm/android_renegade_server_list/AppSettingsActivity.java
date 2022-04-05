@@ -12,8 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +31,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
+import dev.cyberarm.android_renegade_server_list.library.ServerSettings;
 import dev.cyberarm.android_renegade_server_list.library.Settings;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -46,7 +52,9 @@ public class AppSettingsActivity extends AppCompatActivity {
     TextView notifyMaps;
     TextView notifyUsernames;
 
-    Button settingsExport, settingsImport;
+    Button settingsExport, settingsImport, serverSettingsPurgeOrphaned;
+
+    private ArrayList<ServerSettings> serverSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +82,7 @@ public class AppSettingsActivity extends AppCompatActivity {
 
         settingsExport = findViewById(R.id.settings_export);
         settingsImport = findViewById(R.id.settings_import);
+        serverSettingsPurgeOrphaned = findViewById(R.id.server_settings_purge_orphaned);
 
         settingsExport.setOnClickListener(view -> {
             exportSettings();
@@ -83,6 +92,32 @@ public class AppSettingsActivity extends AppCompatActivity {
         });
 
         loadSettings();
+
+        if (AppSync.interfaceServerList != null) {
+            // Button
+            serverSettingsPurgeOrphaned.setOnClickListener(view -> {
+                AppSync.showConfirmationDialog(view.getContext(), "Confirm Purge","Are you sure?", true,
+                    () -> {
+                        for (ServerSettings serverSettings : serverSettings) {
+                            if (!serverSettings.orphaned)
+                                continue;
+
+                            AppSync.settings.serverSettings.remove(AppSync.serverSettings(serverSettings.ID));
+                        }
+
+                        AppSync.saveSettings();
+
+                        populateServerSettings();
+                    },
+                    null
+                );
+            });
+
+            // Function
+            populateServerSettings();
+        } else {
+            serverSettingsPurgeOrphaned.setVisibility(View.GONE);
+        }
     }
 
     private void exportSettings() {
@@ -228,5 +263,89 @@ public class AppSettingsActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void populateServerSettings() {
+        serverSettings = new ArrayList<>();
+
+        Log.i(TAG, "Checking " + AppSync.settings.serverSettings.size() + " server settings for orphans...");
+        for (ServerSettings settings : AppSync.settings.serverSettings) {
+            boolean orphaned = true;
+
+            // FIXME: crashes if server list hasn't loaded yet
+            for(RenegadeServer listedServer : AppSync.interfaceServerList) {
+                if (settings.ID.equals(AppSync.serverUID(listedServer))) {
+                    orphaned = false;
+                    break;
+                }
+            }
+
+            settings.orphaned = orphaned;
+
+            if (settings.orphaned) {
+                Log.w(TAG, "Found orphaned server settings for: " + settings.ID);
+            }
+
+            serverSettings.add(settings);
+        }
+
+        LinearLayout serverSettingsList = findViewById(R.id.server_settings_list);
+        serverSettingsList.removeAllViews();
+
+        int i = -1;
+        for (ServerSettings settings : serverSettings) {
+            ++i;
+
+            View layout = View.inflate(this, R.layout.server_settings_item, null);
+            TextView nameView = layout.findViewById(R.id.server_settings_name);
+            TextView idView = layout.findViewById(R.id.server_settings_id);
+            ImageView imageView = layout.findViewById(R.id.server_game_icon);
+            Button deleteView = layout.findViewById(R.id.server_settings_delete);
+
+            nameView.setText(settings.name);
+            idView.setText(settings.ID);
+
+            deleteView.setOnClickListener(view -> {
+                AppSync.showConfirmationDialog(view.getContext(), "Confirm Deletion", "Are you sure?", true, () -> {
+                    AppSync.settings.serverSettings.remove(AppSync.serverSettings(settings.ID));
+                    AppSync.saveSettings();
+
+                    serverSettingsList.removeView(layout);
+                }, null);
+            });
+
+            if (settings.orphaned) {
+                if (i % 2 == 0) {
+                    layout.setBackgroundColor(getResources().getColor(R.color.dark_red));
+                } else {
+                    layout.setBackgroundColor(getResources().getColor(R.color.red));
+                }
+            } else {
+                for (RenegadeServer renegadeServer : AppSync.interfaceServerList) {
+                    if (settings.ID.equals(AppSync.serverUID(renegadeServer))) {
+                        imageView.setImageResource(AppSync.game_icon(renegadeServer.game));
+                        break;
+                    }
+                }
+
+                if (i % 2 == 1) {
+                    layout.setBackgroundColor(getResources().getColor(R.color.odd));
+                } else {
+                    layout.setBackgroundColor(getResources().getColor(R.color.charcoal));
+                }
+            }
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), ServerSettingsActivity.class);
+                    intent.putExtra("server_id", settings.ID);
+
+                    startActivity(intent);
+                }
+            });
+
+            serverSettingsList.addView(layout);
+        }
     }
 }

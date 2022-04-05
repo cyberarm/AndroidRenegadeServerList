@@ -9,13 +9,15 @@ public class Settings {
     public boolean refreshOnMeteredConnections;
     public ServerSettings globalServerSettings;
     public ArrayList<ServerSettings> serverSettings;
+    public int lastChangeLogVersion;
 
-    public Settings(String renegadeUsername, int serviceAutoRefreshInterval, boolean serviceAutoStartAtBoot, boolean refreshOnMeteredConnections, ServerSettings globalServerSettings, ArrayList<ServerSettings> serverSettings) {
+    public Settings(String renegadeUsername, int serviceAutoRefreshInterval, boolean serviceAutoStartAtBoot, boolean refreshOnMeteredConnections, ServerSettings globalServerSettings, ArrayList<ServerSettings> serverSettings, int lastChangeLogVersion) {
         this.renegadeUsername = renegadeUsername;
         this.serviceAutoRefreshInterval = serviceAutoRefreshInterval;
         this.serviceAutoStartAtBoot = serviceAutoStartAtBoot;
         this.refreshOnMeteredConnections = refreshOnMeteredConnections;
         this.globalServerSettings = globalServerSettings;
         this.serverSettings = serverSettings;
+        this.lastChangeLogVersion = lastChangeLogVersion;
     }
 }

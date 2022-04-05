@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/layout/notification_settings_partial.xml" value="0.22" />
         <entry key="app/src/main/res/layout/player_info_item.xml" value="0.441747572815534" />
         <entry key="app/src/main/res/layout/server_list_item.xml" value="0.441747572815534" />
+        <entry key="app/src/main/res/layout/server_settings_item.xml" value="0.24871794871794872" />
         <entry key="app/src/main/res/menu/main_activity_menu.xml" value="0.5265625" />
         <entry key="app/src/main/res/menu/menu_save.xml" value="0.5265625" />
         <entry key="app/src/main/res/menu/server_view_activity_menu.xml" value="0.5265625" />

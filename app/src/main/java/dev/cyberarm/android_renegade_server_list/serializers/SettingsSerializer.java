@@ -22,6 +22,7 @@ public class SettingsSerializer implements JsonSerializer<Settings> {
         container.add("refresh_on_metered_connections", new JsonPrimitive(src.refreshOnMeteredConnections));
         container.add("global_server_settings", context.serialize(src.globalServerSettings, ServerSettings.class));
         container.add("server_settings", context.serialize(src.serverSettings.toArray(), ServerSettings[].class));
+        container.add("last_changelog_version", new JsonPrimitive(src.lastChangeLogVersion));
 
         return container;
     }

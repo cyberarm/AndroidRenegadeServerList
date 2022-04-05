@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import dev.cyberarm.android_renegade_server_list.library.AppSync;
+import dev.cyberarm.android_renegade_server_list.library.RenegadeServer;
 import dev.cyberarm.android_renegade_server_list.library.ServerSettings;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -23,6 +24,7 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     private String serverID;
     ServerSettings serverSettings;
+    RenegadeServer renegadeServer;
 
     TextView notifyPlayerCount;
     TextView notifyMaps;
@@ -37,6 +39,13 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
         serverID = getIntent().getStringExtra("server_id");
         serverSettings = AppSync.serverSettings(serverID);
+
+        for (RenegadeServer renegadeServer : AppSync.serverList) {
+            if (serverID.equals(AppSync.serverUID(renegadeServer))) {
+                this.renegadeServer = renegadeServer;
+                break;
+            }
+        }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Server Settings");
@@ -64,6 +73,11 @@ public class ServerSettingsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
+        if (renegadeServer != null) {
+            serverSettings.name = renegadeServer.status.name;
+        } else {
+            serverSettings.name = "";
+        }
         String notifyPlayerCountValue = notifyPlayerCount.getText().toString().length() == 0 ? "0" : notifyPlayerCount.getText().toString();
         serverSettings.notifyPlayerCount = Integer.parseInt(notifyPlayerCountValue);
         serverSettings.notifyRequireMultipleConditions = notifyRequireMultipleConditions.isChecked();

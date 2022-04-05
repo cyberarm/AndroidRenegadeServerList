@@ -18,6 +18,8 @@ public class ServerSettingsDeserializer implements JsonDeserializer<ServerSettin
         JsonObject jsonObject = json.getAsJsonObject();
 
         final String ID = jsonObject.get("id").getAsString();
+        JsonElement aName = jsonObject.get("name");
+        final String name = (aName == null) ? "" : aName.getAsString();
         final int notifyPlayerCount = jsonObject.get("notify_player_count").getAsInt();
         final String[] mapNames = context.deserialize(jsonObject.get("notify_map_names"), String[].class);
         final String[] usernames = context.deserialize(jsonObject.get("notify_usernames"), String[].class);
@@ -25,9 +27,9 @@ public class ServerSettingsDeserializer implements JsonDeserializer<ServerSettin
         ArrayList<String> notifyMapNames = new ArrayList<>(Arrays.asList(mapNames));
         ArrayList<String> notifyUsernames = new ArrayList<>(Arrays.asList(usernames));
 
-        JsonElement aBoolean = jsonObject.get("notifyRequireMultipleConditions");
+        JsonElement aBoolean = jsonObject.get("notify_require_multiple_conditions");
         final boolean notifyRequireMultipleConditions = aBoolean != null && aBoolean.getAsBoolean();
 
-        return new ServerSettings(ID, notifyPlayerCount, notifyMapNames, notifyUsernames, notifyRequireMultipleConditions);
+        return new ServerSettings(ID, name, notifyPlayerCount, notifyMapNames, notifyUsernames, notifyRequireMultipleConditions);
     }
 }

@@ -132,7 +132,7 @@ public class RenegadeServerListService extends Service {
 
             if (AppSync.lastServerList != null) {
                 for (RenegadeServer oldServer : AppSync.lastServerList) {
-                    if ((server.id).equals(oldServer.id)) {
+                    if (AppSync.serverUID(server).equals(AppSync.serverUID(oldServer))) {
                         oldDataServer = oldServer;
                         break;
                     }
@@ -141,7 +141,7 @@ public class RenegadeServerListService extends Service {
 
             if (oldDataServer == null) { continue;}
 
-            ServerSettings serverSettings = AppSync.serverSettings(server.id);
+            ServerSettings serverSettings = AppSync.serverSettings(AppSync.serverUID(server));
             int notifyPlayerCount = AppSync.settings.globalServerSettings.notifyPlayerCount;
             ArrayList<String> mapnames = AppSync.settings.globalServerSettings.notifyMapNames;
             ArrayList<String> usernames = AppSync.settings.globalServerSettings.notifyUsernames;
@@ -155,20 +155,22 @@ public class RenegadeServerListService extends Service {
                 continue;
             }
 
-            if (serverSettings.notifyPlayerCount > 0) {
-                notifyPlayerCount = serverSettings.notifyPlayerCount;
-            }
+            if (serverSettings != null) {
+                if (serverSettings.notifyPlayerCount > 0) {
+                    notifyPlayerCount = serverSettings.notifyPlayerCount;
+                }
 
-            if (serverSettings.notifyMapNames.size() > 0) {
-                Set<String> set = new LinkedHashSet<>(mapnames);
-                set.addAll(serverSettings.notifyMapNames);
-                mapnames = new ArrayList<>(set);
-            }
+                if (serverSettings.notifyMapNames.size() > 0) {
+                    Set<String> set = new LinkedHashSet<>(mapnames);
+                    set.addAll(serverSettings.notifyMapNames);
+                    mapnames = new ArrayList<>(set);
+                }
 
-            if (serverSettings.notifyUsernames.size() > 0) {
-                Set<String> set = new LinkedHashSet<>(usernames);
-                set.addAll(serverSettings.notifyUsernames);
-                usernames = new ArrayList<>(set);
+                if (serverSettings.notifyUsernames.size() > 0) {
+                    Set<String> set = new LinkedHashSet<>(usernames);
+                    set.addAll(serverSettings.notifyUsernames);
+                    usernames = new ArrayList<>(set);
+                }
             }
 
             if (notifyPlayerCount != 0 && server.status.numPlayers > 0 && server.status.numPlayers >= notifyPlayerCount && server.status.numPlayers > oldDataServer.status.numPlayers) {
@@ -206,7 +208,7 @@ public class RenegadeServerListService extends Service {
                 }
             }
 
-            if (AppSync.settings.globalServerSettings.notifyRequireMultipleConditions || serverSettings.notifyRequireMultipleConditions) {
+            if (AppSync.settings.globalServerSettings.notifyRequireMultipleConditions || (serverSettings != null && serverSettings.notifyRequireMultipleConditions)) {
                 if (
                         (checkedPlayerHasJoined && checkedPlayerCountMeant) ||
                         (checkedServerMapActive && checkedPlayerCountMeant) ||

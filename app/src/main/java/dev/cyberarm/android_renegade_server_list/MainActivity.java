@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
                 }, true);
             }
         });
+
+        if (AppSync.settings.lastChangeLogVersion < BuildConfig.VERSION_CODE) {
+            AppSync.showChangeLog(this);
+        }
     }
 
     private void populateServerList(ArrayList<RenegadeServer> serverList) {

@@ -28,6 +28,9 @@ public class SettingsDeserializer implements JsonDeserializer<Settings> {
 
         ArrayList<ServerSettings> serverSettings = new ArrayList<>(Arrays.asList(_serverSettings));
 
-        return new Settings(renegadeUsername, serviceAutoRefreshInterval, serviceAutoStartAtBoot, refreshOnMeteredConnections, globalServerSettings, serverSettings);
+        JsonElement aVersion = jsonObject.get("last_changelog_version");
+        final int lastChangeLogVersion = aVersion != null ? aVersion.getAsInt() : -1;
+
+        return new Settings(renegadeUsername, serviceAutoRefreshInterval, serviceAutoStartAtBoot, refreshOnMeteredConnections, globalServerSettings, serverSettings, lastChangeLogVersion);
     }
 }

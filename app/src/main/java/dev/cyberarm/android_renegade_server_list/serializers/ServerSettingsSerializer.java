@@ -17,6 +17,7 @@ public class ServerSettingsSerializer implements JsonSerializer<ServerSettings> 
         JsonObject container = new JsonObject();
 
         container.add("id", new JsonPrimitive(src.ID));
+        container.add("name", new JsonPrimitive(src.name));
         container.add("notify_player_count", new JsonPrimitive(src.notifyPlayerCount));
         container.add("notify_map_names", context.serialize(src.notifyMapNames.toArray(), ArrayList[].class));
         container.add("notify_usernames", context.serialize(src.notifyUsernames.toArray(), ArrayList[].class));

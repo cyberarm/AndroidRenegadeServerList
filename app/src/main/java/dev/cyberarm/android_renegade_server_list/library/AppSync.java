@@ -1,17 +1,17 @@
 package dev.cyberarm.android_renegade_server_list.library;
 
-import static android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import dev.cyberarm.android_renegade_server_list.BuildConfig;
 import dev.cyberarm.android_renegade_server_list.R;
 import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusDeserializer;
 import dev.cyberarm.android_renegade_server_list.serializers.RenegadeServerStatusPlayerDeserializer;
@@ -41,7 +42,7 @@ import dev.cyberarm.android_renegade_server_list.serializers.SettingsDeserialize
 import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 
 public class AppSync {
-    static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2"; // "https://api.cncnet.org/renegade?timeleft=&_players=1&website=";
+    static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2";
     private static final String TAG = "AppSync";
     private static final String VERSION = "0.1.1";
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
@@ -96,8 +97,8 @@ public class AppSync {
             settings = gson().fromJson(readFromFile(configFile.getPath()), Settings.class);
         } else {
             settings = new Settings("", 0, false, false,
-                                    new ServerSettings("", 0, new ArrayList<>(), new ArrayList<>(), false),
-                                    new ArrayList<>());
+                                    new ServerSettings("", "", 0, new ArrayList<>(), new ArrayList<>(), false),
+                                    new ArrayList<>(), -1);
             saveSettings();
         }
     }
@@ -240,10 +241,7 @@ public class AppSync {
             }
         }
 
-        ServerSettings serverSettings = new ServerSettings(serverID, 0, new ArrayList<>(), new ArrayList<>(), false);
-        settings.serverSettings.add(serverSettings);
-
-        return serverSettings;
+        return null;
     }
 
     public static int game_icon(String game) {
@@ -262,6 +260,8 @@ public class AppSync {
                 return R.drawable.bfd_icon;
             case "gz":
                 return R.drawable.gz_icon;
+            case "cwc":
+                return R.drawable.cwc_icon;
             default:
                 return R.drawable.ren_icon;
         }
@@ -274,5 +274,51 @@ public class AppSync {
 
     public static long getLastInterfaceServerListUpdate() {
         return lastInterfaceServerListUpdate;
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String serverUID(RenegadeServer renegadeServer) {
+        return String.format("%s:%d", renegadeServer.address, renegadeServer.port);
+    }
+
+    public static void showConfirmationDialog(Context context, String title, String message, boolean cancelable, Runnable acceptCallback, Runnable cancelCallback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(cancelable)
+                .setPositiveButton(
+                        "OK",
+                        (dialogInterface, i) -> {
+                            if (acceptCallback != null)
+                                acceptCallback.run();
+                            dialogInterface.dismiss();
+                        }
+                )
+                .setNegativeButton(
+                    "CANCEL",
+                      (dialogInterface, i) -> {
+                          if (cancelCallback != null)
+                            cancelCallback.run();
+                          dialogInterface.dismiss();
+                      }
+                );
+        builder.show();
+    }
+
+    public static void showChangeLog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
+        .setMessage("CHANGE THIS FOR RELEASE")
+        .setCancelable(false)
+        .setPositiveButton(
+            "OK",
+            (dialogInterface, i) -> {
+                AppSync.settings.lastChangeLogVersion = BuildConfig.VERSION_CODE;
+                AppSync.saveSettings();
+                dialogInterface.dismiss();
+            }
+        );
+
+        builder.show();
     }
 }

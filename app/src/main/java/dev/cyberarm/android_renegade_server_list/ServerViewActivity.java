@@ -197,7 +197,7 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(this, ServerSettingsActivity.class);
-                intent.putExtra("server_id", renegadeServer.id);
+                intent.putExtra("server_id", AppSync.serverUID(renegadeServer));
                 startActivity(intent);
                 break;
         }
