@@ -32,6 +32,8 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
     ToggleButton notifyRequireMultipleConditions;
 
+    boolean serverSettingsInAppSync = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,20 @@ public class ServerSettingsActivity extends AppCompatActivity {
                 break;
             }
         }
+
+        if (serverSettings == null) {
+            serverSettingsInAppSync = false;
+
+            serverSettings = new ServerSettings(
+                    AppSync.serverUID(renegadeServer),
+                    renegadeServer.status.name,
+                    0,
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    false
+            );
+        }
+
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Server Settings");
@@ -96,6 +112,9 @@ public class ServerSettingsActivity extends AppCompatActivity {
 
         serverSettings.notifyMapNames = mapsList;
         serverSettings.notifyUsernames = usernamesList;
+
+        if (!serverSettingsInAppSync)
+            AppSync.settings.serverSettings.add(serverSettings);
 
         AppSync.saveSettings();
     }

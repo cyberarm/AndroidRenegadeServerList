@@ -312,6 +312,7 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
+                "• Fixed crash in v0.2.0 when initially creating a servers settings\n\n" +
                 "• Fixed \"Notify only if multiple conditions are met\" setting not saved correctly\n\n" +
                 "• Added centralized overview of individual server settings\n\n" +
                 "• Updated AR's icon and added CWC's icon\n\n" +
