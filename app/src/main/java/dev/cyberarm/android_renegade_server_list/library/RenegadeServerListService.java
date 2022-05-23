@@ -208,7 +208,7 @@ public class RenegadeServerListService extends Service {
                 }
             }
 
-            if (AppSync.settings.globalServerSettings.notifyRequireMultipleConditions || (serverSettings != null && serverSettings.notifyRequireMultipleConditions)) {
+            if (serverSettings != null ? serverSettings.notifyRequireMultipleConditions : AppSync.settings.globalServerSettings.notifyRequireMultipleConditions) {
                 if (
                         (checkedPlayerHasJoined && checkedPlayerCountMeant) ||
                         (checkedServerMapActive && checkedPlayerCountMeant) ||
