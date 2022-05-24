@@ -46,6 +46,7 @@ public class AppSync {
     private static final String TAG = "AppSync";
     private static final String VERSION = "0.2.0";
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
+    private static final int API_TIMEOUT = 15_000; // milliseconds
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
     public  static final long softFetchLimit = 30_000; // milliseconds
@@ -175,6 +176,8 @@ public class AppSync {
                 try {
                     URL url = new URL(ENDPOINT);
                     urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setConnectTimeout(API_TIMEOUT);
+                    urlConnection.setReadTimeout(API_TIMEOUT);
                     urlConnection.setRequestProperty("User-Agent", USER_AGENT);
 
                     InputStreamReader inputStream = new InputStreamReader(urlConnection.getInputStream());
