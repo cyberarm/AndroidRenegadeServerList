@@ -44,7 +44,7 @@ import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 public class AppSync {
     static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2";
     private static final String TAG = "AppSync";
-    private static final String VERSION = "0.2.0";
+    private static final String VERSION = BuildConfig.VERSION_NAME;
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
     private static final int API_TIMEOUT = 15_000; // milliseconds
     private static boolean lockNetwork = false;
@@ -263,6 +263,7 @@ public class AppSync {
             case "ar":
                 return R.drawable.ar_icon;
             case "bfd":
+            case "woa":
                 return R.drawable.bfd_icon;
             case "gz":
                 return R.drawable.gz_icon;
@@ -315,13 +316,8 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Fixed crash in v0.2.0 when initially creating a servers settings\n\n" +
-                "• Fixed \"Notify only if multiple conditions are met\" setting not saved correctly\n\n" +
-                "• Added centralized overview of individual server settings\n\n" +
-                "• Updated AR's icon and added CWC's icon\n\n" +
-                "• Reverted back to using server_address:port instead of GSH server id to look up saved server settings\n\n" +
-                "• Added notice if active network is metered and refreshing on a metered connection is not allowed in settings\n\n" +
-                "• Added big orange button to quickly remove orphaned server settings"
+                "• Fixed global setting \"Notify only if multiple conditions are met\" incorrectly effecting server specific settings.\n\n" +
+                "• Added a timeout of 15 seconds to prevent getting stuck trying to fetch server list."
         )
         .setCancelable(false)
         .setPositiveButton(
