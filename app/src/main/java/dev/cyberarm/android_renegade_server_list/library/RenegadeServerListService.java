@@ -33,6 +33,7 @@ public class RenegadeServerListService extends Service {
     private long lastTrigger;
     private boolean runService;
     private long lastUpdatedServiceNotification = 0;
+    private long lastDeliveredNotification = 0;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -69,13 +70,22 @@ public class RenegadeServerListService extends Service {
 
     private Notification createServiceNotification(int totalServerCount, int totalPlayerCount) {
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
                 .setContentText(String.format(Locale.US, "Servers: %d   Players: %d", totalServerCount, totalPlayerCount))
                 .setSmallIcon(R.drawable.app_icon)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setShowWhen(false)
+                .setOngoing(true);
+
         return builder.build();
     }
 
@@ -151,7 +161,8 @@ public class RenegadeServerListService extends Service {
             StringBuilder serverMessage = new StringBuilder();
 
             // Skip if user is in-game
-            if (StreamSupport.stream(usernames).anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
+            if (StreamSupport.stream(server.status.players).map(obj -> obj.nick).anyMatch(obj -> obj.equals(AppSync.settings.renegadeUsername))) {
+                Log.i(TAG, "Skipping notification processing for server '" + server.status.name + "' since '" + AppSync.settings.renegadeUsername + "' is in-game.");
                 continue;
             }
 
@@ -224,8 +235,15 @@ public class RenegadeServerListService extends Service {
         String notificationBody = message.toString().trim();
 
         if (notificationBody.length() > 0) {
+            lastDeliveredNotification = System.currentTimeMillis();
             Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            } else {
+                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
                     .setSmallIcon(R.drawable.app_icon)
@@ -238,6 +256,11 @@ public class RenegadeServerListService extends Service {
                     .setAutoCancel(true);
 
             NotificationManagerCompat.from(this).notify(ID_B, builder.build());
+        } else {
+            // Remove notification if it has become stale
+            if (System.currentTimeMillis() - lastDeliveredNotification >= 60_000 * 15) { // 15 minutes
+                NotificationManagerCompat.from(this).cancel(ID_B);
+            }
         }
 
         updateServiceNotification();

@@ -21,7 +21,7 @@
         <activity android:name="dev.cyberarm.android_renegade_server_list.ServerSettingsActivity" />
         <activity android:name="dev.cyberarm.android_renegade_server_list.AppSettingsActivity" />
         <activity android:name="dev.cyberarm.android_renegade_server_list.ServerViewActivity" />
-        <activity android:name="dev.cyberarm.android_renegade_server_list.MainActivity">
+        <activity android:name="dev.cyberarm.android_renegade_server_list.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="dev.cyberarm.android_renegade_server_list.library.AppOnBootReceiver">
+        <receiver android:name="dev.cyberarm.android_renegade_server_list.library.AppOnBootReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
