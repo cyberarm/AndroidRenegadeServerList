@@ -316,8 +316,9 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Fixed global setting \"Notify only if multiple conditions are met\" incorrectly effecting server specific settings.\n\n" +
-                "• Added a timeout of 15 seconds to prevent getting stuck trying to fetch server list."
+                "• Fixed getting notified for a server you're currently playing on.\n\n" +
+                "• Fixed persistent service notification not persistent on newer android versions.\n\n" +
+                "• Server information notification will be automatically removed after 15 minutes if nothing has changed."
         )
         .setCancelable(false)
         .setPositiveButton(
