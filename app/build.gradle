@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "dev.cyberarm.renegade_server_list"
         minSdkVersion 22
-        targetSdkVersion 32
-        versionCode 7
+        targetSdkVersion 33
+        versionCode 8
         versionName "0.2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
