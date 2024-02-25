@@ -123,6 +123,11 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
 
         int i = 0;
         for (final RenegadeServerStatusPlayer player : renegadeServer.status.players) {
+            // Prevent spectators (players on team 2) from crashing app due to index out of bounds error caused
+            // by looking up Team from array by players team id
+            if (player.team < 0 || player.team > 1)
+                continue;
+
             View layout = View.inflate(this, R.layout.player_info_item, null);
             if (i % 2 == 1) {
                 if (AppSync.isDarkMode(this)) {
@@ -151,7 +156,7 @@ public class ServerViewActivity extends AppCompatActivity implements GestureDete
         // Do stuff
         imageView.setImageResource(R.drawable.question);
 
-        if (renegadeServer.status.players.size() < 20 && !renegadeServer.game.equals("ren")) {
+        if (renegadeServer.status.players.size() < 16 && !renegadeServer.game.equals("ren")) {
             imageView.setImageResource(R.drawable.cross);
             imageView.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.dark_red), android.graphics.PorterDuff.Mode.MULTIPLY);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
