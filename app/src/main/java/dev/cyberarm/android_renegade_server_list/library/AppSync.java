@@ -316,8 +316,7 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Fixed global setting \"Notify only if multiple conditions are met\" incorrectly effecting server specific settings.\n\n" +
-                "• Added a timeout of 15 seconds to prevent getting stuck trying to fetch server list."
+                "• Fixed a crash when viewing server details."
         )
         .setCancelable(false)
         .setPositiveButton(
