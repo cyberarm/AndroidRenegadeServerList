@@ -316,7 +316,7 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Fixed a crash when viewing server details."
+                "• Fixed not sending notifications."
         )
         .setCancelable(false)
         .setPositiveButton(
