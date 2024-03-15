@@ -42,18 +42,19 @@ import dev.cyberarm.android_renegade_server_list.serializers.SettingsDeserialize
 import dev.cyberarm.android_renegade_server_list.serializers.SettingsSerializer;
 
 public class AppSync {
-    static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2";
+    // static final public String ENDPOINT =  "https://gsh.w3dhub.com/listings/getAll/v2?statusLevel=2";
+    static final public String ENDPOINT =  "https://gsh.w3d.cyberarm.dev/listings/getAll/v2?statusLevel=2";
     private static final String TAG = "AppSync";
     private static final String VERSION = BuildConfig.VERSION_NAME;
     private static final String USER_AGENT = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", VERSION);
-    private static final int API_TIMEOUT = 15_000; // milliseconds
+    private static final int API_TIMEOUT = 5_000; // milliseconds
     private static boolean lockNetwork = false;
     private static long lastSuccessfulFetch = 0;
     public  static final long softFetchLimit = 30_000; // milliseconds
 
-    public static ArrayList<RenegadeServer> serverList;
-    public static ArrayList<RenegadeServer> interfaceServerList; // Only updated by MainActivity and used by activities to keep things in logical order
-    public static ArrayList<RenegadeServer> lastServerList;
+    public static ArrayList<RenegadeServer> serverList = new ArrayList<>();
+    public static ArrayList<RenegadeServer> interfaceServerList = new ArrayList<>(); // Only updated by MainActivity and used by activities to keep things in logical order
+    public static ArrayList<RenegadeServer> lastServerList = new ArrayList<>();
     public static Settings settings;
     public static boolean appInitialized = false;
     private static String storageLocation;
@@ -316,7 +317,7 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Fixed not sending notifications."
+                "• Switched to an alternate server list API."
         )
         .setCancelable(false)
         .setPositiveButton(
