@@ -183,9 +183,9 @@ public class AppSettingsActivity extends AppCompatActivity {
         AppSync.saveSettings();
 
         if (AppSync.settings.serviceAutoRefreshInterval > 0) {
-            AppSync.startService(this);
+            AppSync.startWorker(this);
         } else {
-            AppSync.stopService(this);
+            AppSync.stopWorker(this);
         }
     }
 

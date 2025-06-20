@@ -1,17 +1,23 @@
 package dev.cyberarm.android_renegade_server_list.library;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.Operation;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -24,8 +30,8 @@ import java8.lang.Iterables;
 import dev.cyberarm.android_renegade_server_list.MainActivity;
 import dev.cyberarm.android_renegade_server_list.R;
 
-public class RenegadeServerListService extends Service {
-    private static final String TAG = "ServerListService";
+public class RenegadeServerListWorker extends Worker {
+    private static final String TAG = "ServerListWorker";
     private static final String CHANNEL_ID = "Renegade Server List Quite";
     private static final String CHANNEL_ID_NOISY = "Renegade Server List Noisy";
     private static final int ID = 2002_02_27;
@@ -35,17 +41,17 @@ public class RenegadeServerListService extends Service {
     private long lastUpdatedServiceNotification = 0;
     private long lastDeliveredNotification = 0;
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public RenegadeServerListWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
     }
 
+    @NonNull
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public Result doWork() {
         lastTrigger = 0;
 
         if (!AppSync.appInitialized) {
-            AppSync.initialize(getFilesDir());
+            AppSync.initialize(getApplicationContext().getFilesDir());
         }
 
         createNotificationChannels();
@@ -54,31 +60,26 @@ public class RenegadeServerListService extends Service {
 
         runService = true;
 
-        new Thread(this::runUpdater).start();
+        runUpdater();
 
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        runService = false;
+        return Result.success();
     }
 
     private void foregroundify() {
-        startForeground(ID, createServiceNotification(0, 0));
+        createWorkerNotification(0, 0);
     }
 
-    private Notification createServiceNotification(int totalServerCount, int totalPlayerCount) {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+    private Notification createWorkerNotification(int totalServerCount, int totalPlayerCount) {
+        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle("Renegade Server List")
                 .setContentText(String.format(Locale.US, "Servers: %d   Players: %d", totalServerCount, totalPlayerCount))
                 .setSmallIcon(R.drawable.app_icon)
@@ -101,7 +102,7 @@ public class RenegadeServerListService extends Service {
             NotificationChannel channel_b = new NotificationChannel(CHANNEL_ID_NOISY, CHANNEL_ID_NOISY, importance_b);
             channel_b.setDescription("Used for notifying server changes");
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(channel_b);
         }
@@ -236,16 +237,16 @@ public class RenegadeServerListService extends Service {
 
         if (notificationBody.length() > 0) {
             lastDeliveredNotification = System.currentTimeMillis();
-            Intent notificationIntent = new Intent(this, MainActivity.class);
+            Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
             PendingIntent pendingIntent;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             } else {
-                pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             }
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_NOISY)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_NOISY)
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle("Renegade Server List")
                     .setContentText(notificationBody)
@@ -255,11 +256,15 @@ public class RenegadeServerListService extends Service {
                             .bigText(notificationBody))
                     .setAutoCancel(true);
 
-            NotificationManagerCompat.from(this).notify(ID_B, builder.build());
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            NotificationManagerCompat.from(getApplicationContext()).notify(ID_B, builder.build());
         } else {
             // Remove notification if it has become stale
             if (System.currentTimeMillis() - lastDeliveredNotification >= 60_000 * 15) { // 15 minutes
-                NotificationManagerCompat.from(this).cancel(ID_B);
+                NotificationManagerCompat.from(getApplicationContext()).cancel(ID_B);
             }
         }
 
@@ -273,7 +278,11 @@ public class RenegadeServerListService extends Service {
         int totalServerCount = AppSync.serverList.size();
 
         Log.i(TAG, "update service notification: servers: " + totalServerCount + ", players: " + totalPlayerCount);
-        Notification notification = createServiceNotification(totalServerCount, totalPlayerCount);
-        NotificationManagerCompat.from(this).notify(ID, notification);
+        Notification notification = createWorkerNotification(totalServerCount, totalPlayerCount);
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        NotificationManagerCompat.from(getApplicationContext()).notify(ID, notification);
     }
 }

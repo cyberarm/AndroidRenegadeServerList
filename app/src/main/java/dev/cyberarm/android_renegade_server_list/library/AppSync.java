@@ -2,16 +2,14 @@ package dev.cyberarm.android_renegade_server_list.library;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.work.OneTimeWorkRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -77,19 +75,11 @@ public class AppSync {
         return configFilePath;
     }
 
-    public static void startService(Context context) {
-        Intent intent = new Intent(context, RenegadeServerListService.class);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+    public static void startWorker(Context context) {
+        OneTimeWorkRequest.from(RenegadeServerListWorker.class);
     }
 
-    public static void stopService(Context context) {
-        Intent intent = new Intent(context, RenegadeServerListService.class);
-        context.stopService(intent);
+    public static void stopWorker(Context context) {
     }
 
     private static void loadSettings() {
@@ -317,7 +307,7 @@ public class AppSync {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
         .setTitle("Change Log v" + BuildConfig.VERSION_NAME)
         .setMessage(
-                "• Switched to an alternate server list API."
+                "• Updated to target Android 14."
         )
         .setCancelable(false)
         .setPositiveButton(

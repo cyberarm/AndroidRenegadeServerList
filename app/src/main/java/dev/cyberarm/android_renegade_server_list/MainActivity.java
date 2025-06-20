@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             AppSync.initialize(getFilesDir());
 
             if (AppSync.settings.serviceAutoRefreshInterval > 0) {
-                AppSync.startService(this);
+                AppSync.startWorker(this);
             }
         }
 
