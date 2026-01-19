@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_dark">#88000000</color>
-    <color name="background_light">#88ffffff</color>
+    <color name="navigation_background_dark">#a6000000</color>
+    <color name="navigation_background_light">#a6ffffff</color>
+    <color name="background_dark">#a6000000</color>
+    <color name="background_light">#a6ffffff</color>
 
     <color name="blue_1">#ff99c1f1</color>
     <color name="blue_2">#ff62a0ea</color>

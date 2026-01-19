@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerListBinding
+import dev.cyberarm.renegade_server_list_v2.databinding.FragmentLauncherRemoteBinding
 
 class LauncherRemoteFragment : Fragment() {
 
-    private var _binding: FragmentServerListBinding? = null
+    private var _binding: FragmentLauncherRemoteBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,10 +25,10 @@ class LauncherRemoteFragment : Fragment() {
         val launcherRemoteViewModel =
             ViewModelProvider(this).get(LauncherRemoteViewModel::class.java)
 
-        _binding = FragmentServerListBinding.inflate(inflater, container, false)
+        _binding = FragmentLauncherRemoteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.textDashboard
         launcherRemoteViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

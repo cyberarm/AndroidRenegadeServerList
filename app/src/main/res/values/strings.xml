@@ -3,4 +3,6 @@
     <string name="title_home">Server List</string>
     <string name="title_dashboard">Launcher Remote</string>
     <string name="title_notifications">Settings</string>
+
+    <string name="server_item_players">Players</string>
 </resources>
