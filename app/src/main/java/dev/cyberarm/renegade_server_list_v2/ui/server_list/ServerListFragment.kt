@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import dev.cyberarm.renegade_server_list_v2.R
 import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerListBinding
+import dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view.ServerViewFragment
 
 class ServerListFragment : Fragment() {
 
@@ -36,6 +39,11 @@ class ServerListFragment : Fragment() {
             val serverItemContainer: View =
                 layoutInflater.inflate(R.layout.server_item, null)
             binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
+
+            serverItemContainer.setOnClickListener {
+                val bundle = bundleOf("server_uuid" to "hello world")
+                findNavController().navigate(R.id.action_navigation_server_list_to_serverViewFragment, bundle)
+            }
         }
 
         return root

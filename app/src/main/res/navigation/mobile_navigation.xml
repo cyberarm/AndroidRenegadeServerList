@@ -9,7 +9,11 @@
         android:id="@+id/navigation_server_list"
         android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.ServerListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_server_list" />
+        tools:layout="@layout/fragment_server_list" >
+        <action
+            android:id="@+id/action_navigation_server_list_to_serverViewFragment"
+            app:destination="@id/navigation_server_view" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_launcher_remote"
@@ -22,4 +26,14 @@
         android:name="dev.cyberarm.renegade_server_list_v2.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_server_view"
+        android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view.ServerViewFragment"
+        android:label="fragment_server_view"
+        tools:layout="@layout/fragment_server_view" >
+        <argument
+            android:name="server_uuid"
+            app:argType="string" />
+    </fragment>
 </navigation>

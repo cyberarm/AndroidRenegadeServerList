@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerViewBinding
 
 class ServerViewFragment : Fragment() {
@@ -34,6 +36,8 @@ class ServerViewFragment : Fragment() {
 //                layoutInflater.inflate(R.layout.server_item, null)
 //            binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 //        }
+        val serverUUID = arguments?.getString("server_uuid")
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = serverUUID
 
         return root
     }
