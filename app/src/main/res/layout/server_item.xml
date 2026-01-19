@@ -11,7 +11,7 @@
         android:layout_marginLeft="@dimen/server_item_margin"
         android:layout_marginTop="@dimen/server_item_margin"
         android:layout_marginRight="@dimen/server_item_margin"
-        android:background="@color/background_dark"
+        android:background="@drawable/shape_card"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/server_item_padding_left_right"
         android:paddingTop="@dimen/server_item_padding_top_bottom"
@@ -23,37 +23,40 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/server_app_icon"
             android:layout_width="@dimen/server_icon_size"
             android:layout_height="@dimen/server_icon_size"
-            android:background="@drawable/ic_launcher_background" />
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/icon_apb" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/server_item_padding"
-            android:layout_marginRight="@dimen/server_item_padding_left_right"
+            android:layout_marginStart="@dimen/server_item_padding"
+            android:layout_marginEnd="@dimen/server_item_padding_left_right"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/server_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
+                android:maxLines="1"
                 android:text="{SERVER NAME GOES HERE}" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/server_current_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="{map_name_map_name_map_name.mix}" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/server_item_padding"
+            android:layout_marginEnd="@dimen/server_item_padding"
             android:layout_weight="0"
             android:orientation="vertical">
 
@@ -62,12 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
+                android:maxLines="1"
                 android:text="@string/server_item_players" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/server_player_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="{127/127}" />
         </LinearLayout>
 
@@ -75,6 +80,7 @@
             android:id="@+id/imageView2"
             android:layout_width="@dimen/server_icon_size"
             android:layout_height="@dimen/server_icon_size"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/kenney_arrow_right" />
 
     </LinearLayout>

@@ -11,7 +11,7 @@
         <item name="colorOnSecondary">@color/dark_5</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:windowBackground">@color/navigation_background_dark</item>
         <!-- Customize your theme here. -->
+        <item name="custom_card_background">@color/background_light</item>
     </style>
 </resources>
