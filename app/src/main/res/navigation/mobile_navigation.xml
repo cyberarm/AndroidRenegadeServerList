@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_server_list">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_server_list"
         android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.ServerListFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_server_list" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_launcher_remote"
         android:name="dev.cyberarm.renegade_server_list_v2.ui.launcher_remote.LauncherRemoteFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_launcher_remote" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_settings"
         android:name="dev.cyberarm.renegade_server_list_v2.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_settings" />
