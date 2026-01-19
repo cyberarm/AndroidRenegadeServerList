@@ -1,13 +1,13 @@
-package dev.cyberarm.renegade_server_list_v2.ui.dashboard
+package dev.cyberarm.renegade_server_list_v2.ui.server_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class ServerListViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.home.HomeFragment"
+        android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.ServerListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_server_list" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.dashboard.DashboardFragment"
+        android:name="dev.cyberarm.renegade_server_list_v2.ui.launcher_remote.LauncherRemoteFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_launcher_remote" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.notifications.NotificationsFragment"
+        android:name="dev.cyberarm.renegade_server_list_v2.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_settings" />
 </navigation>

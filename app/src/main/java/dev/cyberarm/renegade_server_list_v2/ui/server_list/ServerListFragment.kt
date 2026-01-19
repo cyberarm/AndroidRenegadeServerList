@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2.ui.home
+package dev.cyberarm.renegade_server_list_v2.ui.server_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import dev.cyberarm.renegade_server_list_v2.databinding.FragmentHomeBinding
+import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerListBinding
 
-class HomeFragment : Fragment() {
+class ServerListFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentServerListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val serverListViewModel =
+            ViewModelProvider(this).get(ServerListViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentServerListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        serverListViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
