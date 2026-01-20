@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.RenegadeServerList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_5</item>
         <item name="colorPrimaryVariant">@color/red_1</item>
@@ -12,6 +14,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="custom_navigation_background">@color/navigation_background_light</item>
         <item name="custom_card_background">@color/background_light</item>
     </style>
 </resources>
