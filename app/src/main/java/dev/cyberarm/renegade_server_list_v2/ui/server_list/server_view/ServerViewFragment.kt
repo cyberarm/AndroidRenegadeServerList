@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -42,7 +43,7 @@ class ServerViewFragment : Fragment() {
 //            binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 //        }
         val serverUUID = arguments?.getString("server_uuid")
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = serverUUID
+        (requireActivity() as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)?.title = serverUUID
 
         return root
     }
