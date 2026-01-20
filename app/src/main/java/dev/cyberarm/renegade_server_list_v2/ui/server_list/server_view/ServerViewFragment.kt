@@ -32,6 +32,9 @@ class ServerViewFragment : Fragment() {
         _binding = FragmentServerViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val serverUUID = arguments?.getString("server_uuid")
+        (requireActivity() as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)?.title = serverUUID
+
         val serverItemContainer: View = layoutInflater.inflate(R.layout.server_information_card, null)
         binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 
@@ -42,8 +45,6 @@ class ServerViewFragment : Fragment() {
 //                layoutInflater.inflate(R.layout.server_item, null)
 //            binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 //        }
-        val serverUUID = arguments?.getString("server_uuid")
-        (requireActivity() as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)?.title = serverUUID
 
         return root
     }

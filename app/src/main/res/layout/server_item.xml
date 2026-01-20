@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:maxLines="1"
-                android:text="@string/server_item_players" />
+                android:text="@string/server_info_players" />
 
             <TextView
                 android:id="@+id/server_player_count"
