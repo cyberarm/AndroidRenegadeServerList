@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import dev.cyberarm.renegade_server_list_v2.R
 import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerViewBinding
 
 class ServerViewFragment : Fragment() {
@@ -28,6 +30,9 @@ class ServerViewFragment : Fragment() {
 
         _binding = FragmentServerViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val serverItemContainer: View = layoutInflater.inflate(R.layout.server_information_card, null)
+        binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 
 //        val cheese = IntArray(40) { i -> i + i }
 //        for (value in cheese) {

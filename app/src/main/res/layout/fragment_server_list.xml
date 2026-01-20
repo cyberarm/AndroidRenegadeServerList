@@ -18,7 +18,7 @@
             android:id="@+id/server_listing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/server_item_margin"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/server_item_margin" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

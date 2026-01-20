@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.RenegadeServerList" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.RenegadeServerList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/light_1</item>
         <item name="colorPrimaryVariant">@color/light_5</item>

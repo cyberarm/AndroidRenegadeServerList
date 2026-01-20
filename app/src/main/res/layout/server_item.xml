@@ -50,7 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="{map_name_map_name_map_name.mix}" />
+                android:text="{map_name_map_name_map_name.mix}"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -73,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="{127/127}" />
+                android:text="{127/127}"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <ImageView
