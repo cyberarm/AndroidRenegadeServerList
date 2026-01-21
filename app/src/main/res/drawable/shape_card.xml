@@ -3,12 +3,6 @@
 
     <solid android:color="?attr/custom_card_background" />
 
-    <padding
-        android:bottom="5dp"
-        android:left="10dp"
-        android:right="10dp"
-        android:top="5dp" />
-
     <corners android:radius="5dp" />
 
 </shape>

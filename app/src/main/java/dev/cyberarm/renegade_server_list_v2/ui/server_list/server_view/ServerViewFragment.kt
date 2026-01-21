@@ -38,6 +38,12 @@ class ServerViewFragment : Fragment() {
         val serverItemContainer: View = layoutInflater.inflate(R.layout.server_information_card, null)
         binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 
+        for (i in 0..16) {
+            val serverTeamContainer: View = layoutInflater.inflate(R.layout.server_team_card, null)
+            binding.root.findViewById<LinearLayout>(R.id.server_listing)
+                .addView(serverTeamContainer)
+        }
+
 //        val cheese = IntArray(40) { i -> i + i }
 //        for (value in cheese) {
 //            Log.i("SERVER LIST FRAGMENT", "appending Server Item Container...")
