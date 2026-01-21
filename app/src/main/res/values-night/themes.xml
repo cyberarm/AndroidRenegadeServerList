@@ -12,9 +12,14 @@
         <item name="colorSecondaryVariant">@color/green_5</item>
         <item name="colorOnSecondary">@color/dark_5</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/navigation_background_dark</item>
+        <item name="android:navigationBarColor">@color/navigation_background_dark</item>
+        <!-- Text color -->
+        <item name="android:textColorPrimary">@color/light_1</item>
+        <item name="android:textColor">@color/light_3</item>
         <!-- Customize your theme here. -->
         <item name="custom_navigation_background">@color/navigation_background_dark</item>
+        <item name="custom_row_item_background">@color/row_item_background_dark</item>
         <item name="custom_card_background">@color/background_dark</item>
     </style>
 </resources>

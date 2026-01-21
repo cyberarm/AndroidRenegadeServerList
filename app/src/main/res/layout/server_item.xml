@@ -83,7 +83,9 @@
             android:layout_width="@dimen/server_icon_size"
             android:layout_height="@dimen/server_icon_size"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/kenney_arrow_right" />
+            android:background="@drawable/kenney_arrow_right"
+            android:backgroundTint="?attr/android:textColor"
+            android:backgroundTintMode="multiply" />
 
     </LinearLayout>
 

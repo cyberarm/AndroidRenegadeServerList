@@ -4,6 +4,8 @@
     <color name="navigation_background_light">#a6ffffff</color>
     <color name="background_dark">#88000000</color>
     <color name="background_light">#a6ffffff</color>
+    <color name="row_item_background_dark">#66000000</color>
+    <color name="row_item_background_light">#44ffffff</color>
 
     <color name="blue_1">#ff99c1f1</color>
     <color name="blue_2">#ff62a0ea</color>

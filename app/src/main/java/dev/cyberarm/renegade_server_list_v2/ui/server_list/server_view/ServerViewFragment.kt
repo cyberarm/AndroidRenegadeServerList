@@ -1,10 +1,12 @@
 package dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -38,8 +40,25 @@ class ServerViewFragment : Fragment() {
         val serverItemContainer: View = layoutInflater.inflate(R.layout.server_information_card, null)
         binding.root.findViewById<LinearLayout>(R.id.server_listing).addView(serverItemContainer)
 
-        for (i in 0..16) {
+        for (i in 0..8) {
             val serverTeamContainer: View = layoutInflater.inflate(R.layout.server_team_card, null)
+            val o: LinearLayout = serverTeamContainer.findViewById(R.id.server_team_rows)
+
+            var even = true
+            val v = TypedValue()
+            context?.theme?.resolveAttribute(R.attr.custom_row_item_background, v, true)
+
+            for (j in 1..6) {
+                val rowContainer: View = layoutInflater.inflate(R.layout.server_team_card_player_row, null)
+                rowContainer.findViewById<TextView>(R.id.player_name)?.text = "" + j + "_" + even
+
+                if (even) {
+                    rowContainer.setBackgroundColor(v.data)
+                }
+                even = !even
+                o.addView(rowContainer)
+            }
+
             binding.root.findViewById<LinearLayout>(R.id.server_listing)
                 .addView(serverTeamContainer)
         }

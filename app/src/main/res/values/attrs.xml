@@ -2,4 +2,5 @@
 <resources>
     <attr name="custom_navigation_background" format="reference" />
     <attr name="custom_card_background" format="reference" />
+    <attr name="custom_row_item_background" format="reference" />
 </resources>

@@ -141,13 +141,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/background_dark"
+            android:background="?attr/custom_row_item_background"
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/server_item_padding"
+            android:layout_marginTop="@dimen/server_item_padding"
+            android:layout_marginBottom="@dimen/server_item_padding"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -156,6 +157,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/server_team_rows"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -163,7 +165,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/server_item_padding_left_right"
+                        android:paddingEnd="@dimen/server_item_padding_left_right">
 
                         <TextView
                             android:id="@+id/textView2400"
@@ -218,72 +222,6 @@
                             android:layout_weight="1.5"
                             android:fontFamily="sans-serif-black"
                             android:text="@string/server_info_time_elapsed" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView21000"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/server_item_padding_left_right"
-                            android:layout_weight="3"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="{SteelGhostSteelGhost}" />
-
-                        <TextView
-                            android:id="@+id/textView22000"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/server_item_padding_left_right"
-                            android:layout_weight="1.25"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="99,999" />
-
-                        <TextView
-                            android:id="@+id/textView23000"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/server_item_padding_left_right"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="4,500" />
-
-                        <TextView
-                            android:id="@+id/textView24000"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/server_item_padding_left_right"
-                            android:layout_weight="1.25"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="9,999" />
-
-
-                        <TextView
-                            android:id="@+id/textView230600"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/server_item_padding_left_right"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="9,999" />
-
-                        <TextView
-                            android:id="@+id/textView240600"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
-                            android:fontFamily="sans-serif"
-                            android:maxLines="1"
-                            android:text="00:00:00" />
                     </LinearLayout>
 
                 </LinearLayout>
