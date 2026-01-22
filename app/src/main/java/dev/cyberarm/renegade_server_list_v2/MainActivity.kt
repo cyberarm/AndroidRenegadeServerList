@@ -14,6 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -21,6 +22,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import dev.cyberarm.renegade_server_list_v2.databinding.ActivityMainBinding
+import dev.cyberarm.renegade_server_list_v2.game_server_hub.Client
+import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,6 +68,9 @@ class MainActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
+        // FIXME: Doesn't work?
+        toolbar.setNavigationIcon(R.drawable.kenney_arrow_left)
+
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -75,6 +82,11 @@ class MainActivity : AppCompatActivity() {
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        thread() {
+            val gshClient = Client()
+            gshClient.fetchServers()
+        }
     }
 
     // Uh... why isn't this done by default... come on google, include complete templates...
