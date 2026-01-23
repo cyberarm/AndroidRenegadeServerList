@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.server_list.ServerListFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,4 +26,6 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/server_item_margin" />
     </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

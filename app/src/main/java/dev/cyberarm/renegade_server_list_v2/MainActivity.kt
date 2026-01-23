@@ -82,11 +82,6 @@ class MainActivity : AppCompatActivity() {
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        thread() {
-            val gshClient = Client()
-            gshClient.fetchServers()
-        }
     }
 
     // Uh... why isn't this done by default... come on google, include complete templates...

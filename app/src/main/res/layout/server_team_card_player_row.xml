@@ -55,10 +55,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/server_item_padding_left_right"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:fontFamily="sans-serif"
         android:maxLines="1"
-        android:text="9,999" />
+        android:text="999" />
 
     <TextView
         android:id="@+id/player_time"

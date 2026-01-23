@@ -23,7 +23,7 @@
             android:id="@+id/server_app_icon"
             android:layout_width="@dimen/server_icon_size"
             android:layout_height="@dimen/server_icon_size"
-            app:srcCompat="@drawable/application_icon" />
+            android:background="@drawable/application_default_image" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:text="@string/server_info_map" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/server_current_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -58,7 +58,7 @@
                 android:text="@string/server_info_next_map" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/server_next_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -75,7 +75,7 @@
                 android:text="@string/server_info_region" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/server_region"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -98,7 +98,7 @@
                 android:text="@string/server_info_ping" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/server_ping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -115,7 +115,7 @@
                 android:text="@string/server_info_time_elapsed" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/server_time_elapsed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -132,7 +132,7 @@
                 android:text="@string/server_info_channel" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/server_channel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -155,7 +155,7 @@
                 android:text="@string/server_info_players" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/server_player_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -172,7 +172,7 @@
                 android:text="@string/server_info_time_left" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/server_time_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -189,7 +189,7 @@
                 android:text="@string/server_info_version" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/server_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
