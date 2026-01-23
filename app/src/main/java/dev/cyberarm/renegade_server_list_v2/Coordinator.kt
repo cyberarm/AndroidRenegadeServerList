@@ -88,16 +88,16 @@ object Coordinator {
     // Dynamically swap the primary container view's background image to match the current game
     fun gameBackground(game: String): Int {
         return when (game) {
-            "apb" -> R.drawable.background_apb
-            "ar" -> R.drawable.background_ar
-            "cwc" -> R.drawable.background_cwc
-            "ecw" -> R.drawable.background_ecw
-            "gz" -> R.drawable.background_gz
-            "ia" -> R.drawable.background_ia
-            "ren" -> R.drawable.background_ren
-            "tsr" -> R.drawable.background_tsr
-            "woa" -> R.drawable.background_woa
-            else -> R.drawable.application_background
+            "apb" -> R.drawable.background_apb_drawable
+            "ar" -> R.drawable.background_ar_drawable
+            "cwc" -> R.drawable.background_cwc_drawable
+            "ecw" -> R.drawable.background_ecw_drawable
+            "gz" -> R.drawable.background_gz_drawable
+            "ia" -> R.drawable.background_ia_drawable
+            "ren" -> R.drawable.background_ren_drawable
+            "tsr" -> R.drawable.background_tsr_drawable
+            "woa" -> R.drawable.background_woa_drawable
+            else -> R.drawable.application_background_drawable
         }
     }
 

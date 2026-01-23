@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class LauncherRemoteViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "Under Construction"
     }
     val text: LiveData<String> = _text
 }

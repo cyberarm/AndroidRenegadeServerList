@@ -57,14 +57,6 @@ class ServerViewFragment : Fragment() {
         if (server == null)
             return root
 
-        // FIXME: cache drawable? does android do this for us?
-        // FIXME: Do the PAIN and create drawable resource bitmaps for ALL of these :(
-
-//            val backgroundDrawable = BitmapFactory.decodeResource(resources,
-//                Coordinator.gameBackground(server.game)).toDrawable(resources)
-//            backgroundDrawable.gravity = Gravity.CENTER_HORIZONTAL
-//            backgroundDrawable.tileModeX = Shader.TileMode.CLAMP
-//            backgroundDrawable.tileModeY = Shader.TileMode.CLAMP
         activity?.findViewById<ConstraintLayout>(R.id.container)?.background =
             resources.getDrawable(Coordinator.gameBackground(server.game), activity?.theme)
 
@@ -87,8 +79,12 @@ class ServerViewFragment : Fragment() {
             .setBackgroundResource(Coordinator.serverIcon(server.game))
         serverInformationContainer.findViewById<TextView>(R.id.server_current_map)
             .text = server.status.map
-        serverInformationContainer.findViewById<TextView>(R.id.server_next_map)
-            .text = server.status.nextmap
+        if (server.status.nextmap.isEmpty())
+            serverInformationContainer.findViewById<TextView>(R.id.server_next_map)
+                .text = "—"
+        else
+            serverInformationContainer.findViewById<TextView>(R.id.server_next_map)
+                .text = server.status.nextmap
         serverInformationContainer.findViewById<TextView>(R.id.server_region)
             .text = server.region
         serverInformationContainer.findViewById<TextView>(R.id.server_ping)
