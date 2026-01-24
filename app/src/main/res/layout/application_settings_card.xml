@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/server_item_padding_top_bottom"
+    android:layout_marginBottom="@dimen/server_item_padding_top_bottom">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/server_item_margin"
+        android:background="@drawable/shape_card"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/server_item_padding_left_right"
+        android:paddingTop="@dimen/server_item_padding_left_right"
+        android:paddingEnd="@dimen/server_item_padding_left_right"
+        android:paddingBottom="@dimen/server_item_padding_left_right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/server_icon_size"
+            android:layout_height="@dimen/server_icon_size"
+            app:srcCompat="@drawable/kenney_notification_bubble" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/server_item_padding_left_right"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/title_notification_settings" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_in_game_name" />
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="nickname"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_automatically_refresh_server_list" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_refresh_interval_minutes" />
+
+            <EditText
+                android:id="@+id/editTextNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="minutes"
+                android:inputType="number"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_refresh_metered_connection" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_notify_number_of_players" />
+
+            <EditText
+                android:id="@+id/editTextText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="player count"
+                android:inputType="number"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_notify_preferred_map" />
+
+            <EditText
+                android:id="@+id/editTextText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="map list"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_notify_player_joins" />
+
+            <EditText
+                android:id="@+id/editTextText4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="player list"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/setting_notify_multiple_conditions_met" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

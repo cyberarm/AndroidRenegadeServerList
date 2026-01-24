@@ -9,9 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/server_item_padding_left_right"
-        android:layout_marginTop="@dimen/server_item_padding_top_bottom"
         android:layout_marginEnd="@dimen/server_item_padding_left_right"
-        android:layout_marginBottom="@dimen/server_item_padding_top_bottom"
+        android:layout_marginBottom="@dimen/server_item_margin"
         android:background="@drawable/shape_card"
         android:orientation="vertical">
 

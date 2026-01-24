@@ -8,7 +8,7 @@ data class Status (
     val numplayers: Int,
     val maxplayers: Int,
     val started: String,
-    val estimatedEndTime: String,
+    val estimatedEndTime: String?,
     val remaining: String,
     val teams: Array<Team>,
     val players: Array<Player>

@@ -57,9 +57,11 @@ class ServerViewFragment : Fragment() {
         if (server == null)
             return root
 
+        // set background image
         activity?.findViewById<ConstraintLayout>(R.id.container)?.background =
             resources.getDrawable(Coordinator.gameBackground(server.game), activity?.theme)
 
+        // set title
         (requireActivity() as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)?.title = server.status.name
         populateServerInformationCard(server)
         populateServerTeamCards(server)
@@ -90,13 +92,13 @@ class ServerViewFragment : Fragment() {
         serverInformationContainer.findViewById<TextView>(R.id.server_ping)
             .text = "—"
         serverInformationContainer.findViewById<TextView>(R.id.server_time_elapsed)
-            .text = "??:??:??"
+            .text = Coordinator.serverTimeElapsed(server)
         serverInformationContainer.findViewById<TextView>(R.id.server_channel)
             .text = server.channel
         serverInformationContainer.findViewById<TextView>(R.id.server_player_count)
             .text = String.format("%d/%d", server.status.numplayers, server.status.maxplayers)
         serverInformationContainer.findViewById<TextView>(R.id.server_time_left)
-            .text = server.status.remaining
+            .text = Coordinator.serverTimeRemaining(server)
         serverInformationContainer.findViewById<TextView>(R.id.server_version)
             .text = server.version
 
@@ -120,7 +122,7 @@ class ServerViewFragment : Fragment() {
 
         val serverTeamContainer: View = layoutInflater.inflate(R.layout.server_team_card, null)
         serverTeamContainer.findViewById<ImageView>(R.id.team_faction_icon)
-            .setBackgroundResource(Coordinator.factionIcon(server.game, team.name))
+            .setBackgroundResource(Coordinator.factionIcon(server.game, team.name, team.id))
         serverTeamContainer.findViewById<TextView>(R.id.team_name)
             .text = team.name
         serverTeamContainer.findViewById<TextView>(R.id.team_score)

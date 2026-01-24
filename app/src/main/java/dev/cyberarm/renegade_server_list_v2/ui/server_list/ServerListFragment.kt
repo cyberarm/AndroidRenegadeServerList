@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +61,10 @@ class ServerListFragment : Fragment() {
         } else {
             populateServers()
         }
+
+        // set background image to "default" by providing fake game
+        activity?.findViewById<ConstraintLayout>(R.id.container)?.background =
+            resources.getDrawable(Coordinator.gameBackground("DEFAULT"), activity?.theme)
 
         return root
     }

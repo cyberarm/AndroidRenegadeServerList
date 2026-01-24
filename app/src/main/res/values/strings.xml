@@ -4,6 +4,10 @@
     <string name="title_launcher_remote">Launcher Remote</string>
     <string name="title_settings">Settings</string>
 
+    <string name="title_application_settings">Application Settings</string>
+    <string name="title_notification_settings">Notification Settings</string>
+    <string name="title_import_export_settings">Import or Export Settings</string>
+
     <string name="server_info_map">Map</string>
     <string name="server_info_next_map">Next Map</string>
     <string name="server_info_region">Region</string>

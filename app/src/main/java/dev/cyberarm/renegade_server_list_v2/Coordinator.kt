@@ -10,6 +10,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.concurrent.thread
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -18,17 +23,24 @@ import kotlin.coroutines.EmptyCoroutineContext
 object Coordinator {
     val USER_AGENT: String = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", "2.0")
     val NO_PING_MAGIC_NUMBER: Int = 8962
+    val BROADCAST_PORT: Int = 46753
 
     // thread safe gsh server list
     private val gshClient: Client = Client()
     private val gshClientMutex: Mutex = Mutex()
     private val gshServerList: ArrayList<Server> = ArrayList()
     private val gshServerListMutex: Mutex = Mutex()
+    private val broadcastReceiverSocket: DatagramSocket = DatagramSocket(BROADCAST_PORT, InetAddress.getByName("0.0.0.0"))
     private var isInitialized = false
 
+    enum class SpecialTeams(val id: Int) {
+        SPECTATOR(-4),
+        MUTANT(-3),
+        NEUTRAL(-2),
+        UNTEAMED(-1)
+    }
+
     fun init(): Boolean {
-
-
         return isInitialized
     }
 
@@ -70,6 +82,43 @@ object Coordinator {
         return null
     }
 
+    private fun renegadeTimespan(from: Date, to: Date): String {
+        val difference = from.time - to.time
+        val hours = difference / (1000 * 60 * 60)
+        val minutes = difference / (1000 * 60) % 60
+        val seconds = difference / 1000 % 60
+
+        return String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    fun serverTimeElapsed(server: Server): String {
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSz", Locale.US)
+        val startTime = format.parse(server.status.started)
+
+        if (startTime == null)
+            return "—"
+
+        return renegadeTimespan(Date(), startTime)
+    }
+
+    fun serverTimeRemaining(server: Server): String {
+        if (server.status.estimatedEndTime == null)
+            return "—"
+
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSz", Locale.US)
+        val currentTime = Date()
+        val endTime = format.parse(server.status.estimatedEndTime)
+
+        if (endTime == null)
+            return server.status.remaining
+
+        // fix bad estimate
+        if (currentTime.time - endTime.time < 0)
+            return server.status.remaining
+
+        return renegadeTimespan(currentTime, endTime)
+    }
+
     fun serverIcon(game: String): Int {
         return when (game) {
             "apb" -> R.drawable.icon_apb
@@ -97,39 +146,53 @@ object Coordinator {
             "ren" -> R.drawable.background_ren_drawable
             "tsr" -> R.drawable.background_tsr_drawable
             "woa" -> R.drawable.background_woa_drawable
+
             else -> R.drawable.application_background_drawable
         }
     }
 
-    fun factionIcon(game: String, team: String): Int {
+    fun factionIcon(game: String, team: String, id: Int): Int {
+        // handle special teams specially
+        if (id < 0) {
+            return when (id) {
+                SpecialTeams.SPECTATOR.id -> R.drawable.application_default_image
+                SpecialTeams.MUTANT.id -> R.drawable.application_default_image
+                SpecialTeams.NEUTRAL.id -> R.drawable.application_default_image
+                SpecialTeams.UNTEAMED.id -> R.drawable.application_default_image
+
+                else -> R.drawable.application_default_image
+            }
+        }
+
         val fusion: String = String.format("%s_%s", game, team.lowercase())
 
         return when (fusion) {
             "apb_soviets" -> R.drawable.faction_apb_soviets
             "apb_allies" -> R.drawable.faction_apb_allies
 
-            "ar_soviets" -> R.drawable.application_default_image
-            "ar_allies" -> R.drawable.application_default_image
+            "ar_soviets" -> R.drawable.faction_ar_soviets
+            "ar_allies" -> R.drawable.faction_ar_allies
             "ar_yuri" -> R.drawable.application_default_image
 
             // cwc, skipping for now :(
 
-            // ecw, 'teamless'
+            "ecw_nod" -> R.drawable.faction_ecw_nod
+            "ecw_gdi" -> R.drawable.faction_ecw_gdi
 
-            "gz_soviets" -> R.drawable.application_default_image
-            "gz_allies" -> R.drawable.application_default_image
+            "gz_nod" -> R.drawable.faction_gz_nod
+            "gz_gdi" -> R.drawable.faction_gz_gdi
 
-            "ia_nod" -> R.drawable.application_default_image
-            "ia_gdi" -> R.drawable.application_default_image
+            "ia_nod" -> R.drawable.faction_ia_nod
+            "ia_gdi" -> R.drawable.faction_ia_gdi
 
-            "ren_nod" -> R.drawable.application_default_image
-            "ren_gdi" -> R.drawable.application_default_image
+            "ren_nod" -> R.drawable.faction_ren_nod
+            "ren_gdi" -> R.drawable.faction_ren_gdi
 
-            "tsr_nod" -> R.drawable.application_default_image
-            "tsr_gdi" -> R.drawable.application_default_image
+            "tsr_nod" -> R.drawable.faction_tsr_nod
+            "tsr_gdi" -> R.drawable.faction_tsr_gdi
 
-            "woa_harkonnen" -> R.drawable.application_default_image
-            "woa_atreides" -> R.drawable.application_default_image
+            "woa_harkonnen" -> R.drawable.faction_woa_harkonnen
+            "woa_atreides" -> R.drawable.faction_woa_atreides
 
             else -> R.drawable.application_default_image
         }

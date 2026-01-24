@@ -4,7 +4,7 @@
         <item name="android:fitsSystemWindows">true</item>
 
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/dark_5</item>
+        <item name="colorPrimary">@color/dark_1</item>
         <item name="colorPrimaryVariant">@color/red_1</item>
         <item name="colorOnPrimary">@color/dark_5</item>
         <!-- Secondary brand color. -->

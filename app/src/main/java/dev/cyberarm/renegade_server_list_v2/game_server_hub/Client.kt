@@ -1,20 +1,26 @@
 package dev.cyberarm.renegade_server_list_v2.game_server_hub
 
-import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dev.cyberarm.renegade_server_list_v2.Coordinator
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.List
 import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Server
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.concurrent.TimeUnit
 
 class Client {
+    private val CONNECTION_TIMEOUT_MS: Long = 5_000
+    private val WRITE_TIMEOUT_MS: Long = 5_000
+    private val READ_TIMEOUT_MS: Long = 5_000
     val serverList: ArrayList<Server> = ArrayList()
 
     fun fetchServers(): Boolean
     {
-        val client = OkHttpClient()
+        val client = OkHttpClient().newBuilder()
+            .connectTimeout(CONNECTION_TIMEOUT_MS, TimeUnit.MILLISECONDS)
+            .readTimeout(READ_TIMEOUT_MS, TimeUnit.MILLISECONDS)
+            .writeTimeout(WRITE_TIMEOUT_MS, TimeUnit.MILLISECONDS)
+            .build()
+
         val request = Request.Builder()
             .header("User-Agent", Coordinator.USER_AGENT)
             .url("https://gsh.w3d.cyberarm.dev/listings/getAll/v2?statusLevel=2")
