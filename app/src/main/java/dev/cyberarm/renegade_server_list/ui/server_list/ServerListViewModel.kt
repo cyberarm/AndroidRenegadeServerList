@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2.ui.server_list
+package dev.cyberarm.renegade_server_list.ui.server_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

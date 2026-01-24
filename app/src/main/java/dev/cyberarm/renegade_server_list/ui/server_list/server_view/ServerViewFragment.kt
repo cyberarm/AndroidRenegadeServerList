@@ -1,12 +1,7 @@
-package dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view
+package dev.cyberarm.renegade_server_list.ui.server_list.server_view
 
-import android.graphics.BitmapFactory
-import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.transition.Visibility
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -17,16 +12,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import dev.cyberarm.renegade_server_list_v2.Coordinator
-import dev.cyberarm.renegade_server_list_v2.R
-import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerViewBinding
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Player
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Server
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Team
+import dev.cyberarm.renegade_server_list.Coordinator
+import dev.cyberarm.renegade_server_list.R
+import dev.cyberarm.renegade_server_list.databinding.FragmentServerViewBinding
+import dev.cyberarm.renegade_server_list.game_server_hub.data.Player
+import dev.cyberarm.renegade_server_list.game_server_hub.data.Server
+import dev.cyberarm.renegade_server_list.game_server_hub.data.Team
 
 class ServerViewFragment : Fragment() {
 

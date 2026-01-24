@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2
+package dev.cyberarm.renegade_server_list
 
 import org.junit.Test
 

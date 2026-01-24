@@ -1,30 +1,20 @@
-package dev.cyberarm.renegade_server_list_v2
+package dev.cyberarm.renegade_server_list
 
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import dev.cyberarm.renegade_server_list_v2.databinding.ActivityMainBinding
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.Client
-import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
+import dev.cyberarm.renegade_server_list.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

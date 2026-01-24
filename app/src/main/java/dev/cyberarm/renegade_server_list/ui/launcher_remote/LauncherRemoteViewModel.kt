@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2.ui.launcher_remote
+package dev.cyberarm.renegade_server_list.ui.launcher_remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

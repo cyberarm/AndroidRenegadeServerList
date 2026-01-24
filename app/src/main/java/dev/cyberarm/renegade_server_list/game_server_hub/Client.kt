@@ -1,8 +1,8 @@
-package dev.cyberarm.renegade_server_list_v2.game_server_hub
+package dev.cyberarm.renegade_server_list.game_server_hub
 
 import com.google.gson.Gson
-import dev.cyberarm.renegade_server_list_v2.Coordinator
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Server
+import dev.cyberarm.renegade_server_list.Coordinator
+import dev.cyberarm.renegade_server_list.game_server_hub.data.Server
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.util.concurrent.TimeUnit

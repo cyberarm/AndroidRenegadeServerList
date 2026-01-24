@@ -1,24 +1,21 @@
-package dev.cyberarm.renegade_server_list_v2.ui.server_list
+package dev.cyberarm.renegade_server_list.ui.server_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import dev.cyberarm.renegade_server_list_v2.Coordinator
-import dev.cyberarm.renegade_server_list_v2.R
-import dev.cyberarm.renegade_server_list_v2.databinding.FragmentServerListBinding
-import dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view.ServerViewFragment
+import dev.cyberarm.renegade_server_list.Coordinator
+import dev.cyberarm.renegade_server_list.R
+import dev.cyberarm.renegade_server_list.databinding.FragmentServerListBinding
 
 class ServerListFragment : Fragment() {
 

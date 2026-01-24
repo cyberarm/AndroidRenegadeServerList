@@ -1,17 +1,16 @@
-package dev.cyberarm.renegade_server_list_v2.ui.settings
+package dev.cyberarm.renegade_server_list.ui.launcher_remote
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import dev.cyberarm.renegade_server_list_v2.databinding.FragmentSettingsBinding
+import dev.cyberarm.renegade_server_list.databinding.FragmentLauncherRemoteBinding
 
-class SettingsFragment : Fragment() {
+class LauncherRemoteFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentLauncherRemoteBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,10 +21,10 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val launcherRemoteViewModel =
+            ViewModelProvider(this).get(LauncherRemoteViewModel::class.java)
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentLauncherRemoteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root

@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2
+package dev.cyberarm.renegade_server_list
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

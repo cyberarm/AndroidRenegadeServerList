@@ -1,14 +1,7 @@
-package dev.cyberarm.renegade_server_list_v2
+package dev.cyberarm.renegade_server_list
 
-import android.content.pm.PackageManager
-import androidx.work.CoroutineWorker
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.Client
-import dev.cyberarm.renegade_server_list_v2.game_server_hub.data.Server
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import dev.cyberarm.renegade_server_list.game_server_hub.Client
+import dev.cyberarm.renegade_server_list.game_server_hub.data.Server
 import kotlinx.coroutines.sync.Mutex
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -16,8 +9,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.concurrent.thread
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 // The do everything singleton :)
 object Coordinator {

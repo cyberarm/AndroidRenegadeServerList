@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_server_list"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.ServerListFragment"
+        android:name="dev.cyberarm.renegade_server_list.ui.server_list.ServerListFragment"
         android:label="@string/title_server_list"
         tools:layout="@layout/fragment_server_list" >
         <action
@@ -17,19 +17,19 @@
 
     <fragment
         android:id="@+id/navigation_launcher_remote"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.launcher_remote.LauncherRemoteFragment"
+        android:name="dev.cyberarm.renegade_server_list.ui.launcher_remote.LauncherRemoteFragment"
         android:label="@string/title_launcher_remote"
         tools:layout="@layout/fragment_launcher_remote" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.settings.SettingsFragment"
+        android:name="dev.cyberarm.renegade_server_list.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/navigation_server_view"
-        android:name="dev.cyberarm.renegade_server_list_v2.ui.server_list.server_view.ServerViewFragment"
+        android:name="dev.cyberarm.renegade_server_list.ui.server_list.server_view.ServerViewFragment"
         android:label=" "
         tools:layout="@layout/fragment_server_view" >
         <argument

@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    namespace = "dev.cyberarm.renegade_server_list_v2"
+    namespace = "dev.cyberarm.renegade_server_list"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "dev.cyberarm.renegade_server_list_v2"
+        applicationId = "dev.cyberarm.renegade_server_list"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "2.0"
+        versionCode = 20
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

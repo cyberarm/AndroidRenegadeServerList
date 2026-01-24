@@ -1,4 +1,4 @@
-package dev.cyberarm.renegade_server_list_v2.game_server_hub.data
+package dev.cyberarm.renegade_server_list.game_server_hub.data
 
 data class Status (
     val name: String,
