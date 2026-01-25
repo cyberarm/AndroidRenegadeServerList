@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -20,6 +19,7 @@ import dev.cyberarm.renegade_server_list.databinding.FragmentServerViewBinding
 import dev.cyberarm.renegade_server_list.game_server_hub.data.Player
 import dev.cyberarm.renegade_server_list.game_server_hub.data.Server
 import dev.cyberarm.renegade_server_list.game_server_hub.data.Team
+import java.util.Locale
 
 class ServerViewFragment : Fragment() {
 
@@ -89,7 +89,7 @@ class ServerViewFragment : Fragment() {
         serverInformationContainer.findViewById<TextView>(R.id.server_channel)
             .text = server.channel
         serverInformationContainer.findViewById<TextView>(R.id.server_player_count)
-            .text = String.format("%d/%d", server.status.numplayers, server.status.maxplayers)
+            .text = String.format(Locale.US, "%d/%d", server.status.numplayers, server.status.maxplayers)
         serverInformationContainer.findViewById<TextView>(R.id.server_time_left)
             .text = Coordinator.serverTimeRemaining(server)
         serverInformationContainer.findViewById<TextView>(R.id.server_version)
@@ -125,12 +125,12 @@ class ServerViewFragment : Fragment() {
         serverTeamContainer.findViewById<TextView>(R.id.team_deaths)
             .text = team.deaths.toString()
         serverTeamContainer.findViewById<TextView>(R.id.team_player_count)
-            .text = String.format("%d/%d", players.size, server.status.maxplayers)
+            .text = String.format(Locale.US, "%d/%d", players.size, server.status.maxplayers)
 
         val playerRowContainer: LinearLayout = serverTeamContainer.findViewById(R.id.server_team_rows)
         if (players.isEmpty()) {
-            playerRowContainer.visibility = GONE
-            serverTeamContainer.findViewById<LinearLayout>(R.id.team_separator).visibility = GONE
+            playerRowContainer.visibility = View.GONE
+            serverTeamContainer.findViewById<LinearLayout>(R.id.team_separator).visibility = View.GONE
         }
 
         var even = true
@@ -138,22 +138,22 @@ class ServerViewFragment : Fragment() {
         context?.theme?.resolveAttribute(R.attr.custom_row_item_background, v, true)
 
         for (player in players) {
-            val PlayerRowItem: View = layoutInflater.inflate(R.layout.server_team_card_player_row, null)
-            PlayerRowItem.findViewById<TextView>(R.id.player_name)?.text = player.nick
-            PlayerRowItem.findViewById<TextView>(R.id.player_score)?.text = player.score.toString()
-            PlayerRowItem.findViewById<TextView>(R.id.player_kills)?.text = player.kills.toString()
-            PlayerRowItem.findViewById<TextView>(R.id.player_deaths)?.text = player.deaths.toString()
+            val playerRowItem: View = layoutInflater.inflate(R.layout.server_team_card_player_row, null)
+            playerRowItem.findViewById<TextView>(R.id.player_name)?.text = player.nick
+            playerRowItem.findViewById<TextView>(R.id.player_score)?.text = player.score.toString()
+            playerRowItem.findViewById<TextView>(R.id.player_kills)?.text = player.kills.toString()
+            playerRowItem.findViewById<TextView>(R.id.player_deaths)?.text = player.deaths.toString()
             if (player.ping == Coordinator.NO_PING_MAGIC_NUMBER)
-                PlayerRowItem.findViewById<TextView>(R.id.player_ping)?.text = "—"
+                playerRowItem.findViewById<TextView>(R.id.player_ping)?.text = "—"
             else
-                PlayerRowItem.findViewById<TextView>(R.id.player_ping)?.text = player.ping.toString()
-            PlayerRowItem.findViewById<TextView>(R.id.player_time)?.text = player.time
+                playerRowItem.findViewById<TextView>(R.id.player_ping)?.text = player.ping.toString()
+            playerRowItem.findViewById<TextView>(R.id.player_time)?.text = player.time
 
             if (even) {
-                PlayerRowItem.setBackgroundColor(v.data)
+                playerRowItem.setBackgroundColor(v.data)
             }
             even = !even
-            playerRowContainer.addView(PlayerRowItem)
+            playerRowContainer.addView(playerRowItem)
         }
 
         binding.root.findViewById<LinearLayout>(R.id.server_listing)
