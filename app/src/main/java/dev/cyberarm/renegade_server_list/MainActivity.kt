@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        Coordinator.loadApplicationSettings(this)
     }
 
     // Uh... why isn't this done by default... come on google, include complete templates...

@@ -49,7 +49,7 @@
                 android:text="@string/setting_in_game_name" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/input_ingame_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -66,7 +66,7 @@
                 android:text="@string/setting_automatically_refresh_server_list" />
 
             <ToggleButton
-                android:id="@+id/toggleButton"
+                android:id="@+id/input_auto_refresh_server_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ToggleButton"
@@ -81,7 +81,7 @@
                 android:text="@string/setting_refresh_interval_minutes" />
 
             <EditText
-                android:id="@+id/editTextNumber"
+                android:id="@+id/input_auto_refresh_interval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -98,7 +98,7 @@
                 android:text="@string/setting_refresh_metered_connection" />
 
             <ToggleButton
-                android:id="@+id/toggleButton2"
+                android:id="@+id/input_auto_refresh_metered_connection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ToggleButton"
@@ -113,7 +113,7 @@
                 android:text="@string/setting_notify_number_of_players" />
 
             <EditText
-                android:id="@+id/editTextText2"
+                android:id="@+id/input_notify_player_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -130,7 +130,7 @@
                 android:text="@string/setting_notify_preferred_map" />
 
             <EditText
-                android:id="@+id/editTextText3"
+                android:id="@+id/input_notify_map_names"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -147,7 +147,7 @@
                 android:text="@string/setting_notify_player_joins" />
 
             <EditText
-                android:id="@+id/editTextText4"
+                android:id="@+id/input_notify_usernames"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -164,7 +164,7 @@
                 android:text="@string/setting_notify_multiple_conditions_met" />
 
             <ToggleButton
-                android:id="@+id/toggleButton3"
+                android:id="@+id/input_notify_multiple_conditions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ToggleButton"

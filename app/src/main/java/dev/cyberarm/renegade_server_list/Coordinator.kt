@@ -1,8 +1,16 @@
 package dev.cyberarm.renegade_server_list
 
+import android.content.Context
+import android.util.Log
+import com.google.gson.Gson
 import dev.cyberarm.renegade_server_list.game_server_hub.Client
 import dev.cyberarm.renegade_server_list.game_server_hub.data.Server
+import dev.cyberarm.renegade_server_list.settings.data.ApplicationSettings
+import dev.cyberarm.renegade_server_list.settings.data.LegacyApplicationSettings
+import dev.cyberarm.renegade_server_list.settings.data.LegacyServerSettings
+import dev.cyberarm.renegade_server_list.settings.data.ServerSettings
 import kotlinx.coroutines.sync.Mutex
+import java.io.File
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.text.SimpleDateFormat
@@ -12,6 +20,7 @@ import kotlin.concurrent.thread
 
 // The do everything singleton :)
 object Coordinator {
+    private const val TAG = "COORDINATOR"
     val USER_AGENT: String = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", "2.0")
     val NO_PING_MAGIC_NUMBER: Int = 8962
     val BROADCAST_PORT: Int = 46753
@@ -22,6 +31,7 @@ object Coordinator {
     private val gshServerList: ArrayList<Server> = ArrayList()
     private val gshServerListMutex: Mutex = Mutex()
     private val broadcastReceiverSocket: DatagramSocket = DatagramSocket(BROADCAST_PORT, InetAddress.getByName("0.0.0.0"))
+    lateinit var applicationSettings: ApplicationSettings
     private var isInitialized = false
 
     enum class SpecialTeams(val id: Int) {
@@ -31,8 +41,125 @@ object Coordinator {
         UNTEAMED(-1)
     }
 
-    fun init(): Boolean {
+    fun init(context: Context): Boolean {
+        if (!isInitialized) {
+            loadApplicationSettings(context)
+
+            isInitialized = true
+        }
+
         return isInitialized
+    }
+
+    fun loadApplicationSettings(context: Context) {
+        val file = File(context.filesDir.toString() + File.pathSeparator + "application_settings.json")
+        Log.i(TAG, "Loading settings from: $file...")
+
+        if (file.exists()) {
+            Log.i(TAG, "Loaded settings")
+            applicationSettings = Gson().fromJson(file.readText(), ApplicationSettings::class.java)
+        } else {
+            applicationSettings = importLegacySettingsOrCreateApplicationSettings(context)
+            Log.d(TAG, "FAILED, loading legacy or default settings")
+        }
+    }
+
+    fun importLegacySettingsOrCreateApplicationSettings(context: Context): ApplicationSettings {
+        val file = File(context.filesDir.toString() + File.pathSeparator + "settings.json")
+
+        Log.i(TAG, "Loading legacy settings from: $file...")
+
+        // Migrate from legacy to renewed settings
+        if (file.exists()) {
+            val legacyApplicationSettings =
+                Gson().fromJson(file.readText(), LegacyApplicationSettings::class.java)
+
+            Log.i(TAG, "Loaded legacy settings")
+
+            val notifyServerSettings = ServerSettings(
+                0,
+                "",
+                "",
+                legacyApplicationSettings.globalServerSettings.notifyPlayerCount,
+                legacyApplicationSettings.globalServerSettings.notifyMapNames,
+                legacyApplicationSettings.globalServerSettings.notifyUsernames,
+                legacyApplicationSettings.globalServerSettings.notifyRequireMultipleConditions
+            )
+
+            val serverSettings = ArrayList<ServerSettings>()
+            for (legacyServerSetting in legacyApplicationSettings.serverSettings)
+            {
+                serverSettings.add(
+                    ServerSettings(
+                        0,
+                        legacyServerSetting.ID,
+                        legacyServerSetting.name,
+                        legacyServerSetting.notifyPlayerCount,
+                        legacyServerSetting.notifyMapNames,
+                        legacyServerSetting.notifyUsernames,
+                        legacyServerSetting.notifyRequireMultipleConditions
+                    )
+                )
+            }
+
+            applicationSettings = ApplicationSettings(
+                0,
+                legacyApplicationSettings.renegadeUsername,
+                false,
+                legacyApplicationSettings.serviceAutoRefreshInterval * 60,
+                legacyApplicationSettings.serviceAutoStartAtBoot,
+                notifyServerSettings,
+                serverSettings,
+                20
+            )
+
+            if (saveApplicationSettings(context)) {
+                // Remove legacy configuration file
+                Log.i(TAG, "Removing legacy settings...")
+                file.delete()
+            }
+        // Create default application settings
+        } else {
+            applicationSettings = ApplicationSettings(
+                0,
+                "",
+                false,
+                3,
+                true,
+                ServerSettings(
+                    0,
+                    "",
+                    "",
+                    0,
+                    ArrayList<String>(),
+                    ArrayList<String>(),
+                    false
+                ),
+                ArrayList<ServerSettings>(),
+                20
+            )
+
+            Log.i(TAG, "FAILED: Loaded default settings")
+
+            saveApplicationSettings(context)
+        }
+
+        return applicationSettings
+    }
+
+    fun saveApplicationSettings(context: Context): Boolean {
+        val file = File(context.filesDir.toString() + File.pathSeparator + "application_settings.json")
+
+        try {
+            file.writeText(Gson().toJson(applicationSettings))
+            Log.i(TAG, "Wrote settings to $file")
+
+            return true
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to save application settings!")
+            Log.e(TAG, e.toString())
+            return false
+        }
     }
 
     fun serverList(): ArrayList<Server> {

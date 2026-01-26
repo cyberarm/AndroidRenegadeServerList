@@ -56,9 +56,9 @@ class ServerViewFragment : Fragment() {
 
         // set title
         (requireActivity() as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)?.title = server.status.name
+
         populateServerInformationCard(server)
         populateServerTeamCards(server)
-
 
         return root
     }
