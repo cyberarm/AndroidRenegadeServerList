@@ -100,18 +100,47 @@ class ServerViewFragment : Fragment() {
 
     fun populateServerTeamCards(server: Server) {
         for (team in server.status.teams) {
-            // FIXME: Handle all the teams :}
-            if (team.id > 1)
-                return
-
             populateServerTeamCard(server, team)
         }
+
+        populateServerTeamCard(
+            server,
+            Team(
+                Coordinator.SpecialTeams.SPECTATOR.id,
+                "Spectators", 0, 0, 0
+            )
+        )
+        populateServerTeamCard(
+            server,
+            Team(
+                Coordinator.SpecialTeams.MUTANT.id,
+                "Mutants", 0, 0, 0
+            )
+        )
+        populateServerTeamCard(
+            server,
+            Team(
+                Coordinator.SpecialTeams.NEUTRAL.id,
+                "Neutral", 0, 0, 0
+            )
+        )
+        populateServerTeamCard(
+            server,
+            Team(
+                Coordinator.SpecialTeams.UNTEAMED.id,
+                "Unteamed", 0, 0, 0
+            )
+        )
     }
 
     fun populateServerTeamCard(server: Server, team: Team) {
         val players: List<Player> = server.status.players.filter { player -> player.team == team.id }
             .sortedBy { it.score }
             .reversed()
+
+        // Only include primary teams by default unless they've got players
+        if ((team.id !in 0..1) && players.isEmpty())
+            return
 
         val serverTeamContainer: View = layoutInflater.inflate(R.layout.server_team_card, null)
         serverTeamContainer.findViewById<ImageView>(R.id.team_faction_icon)

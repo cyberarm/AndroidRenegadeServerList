@@ -21,9 +21,11 @@ import kotlin.concurrent.thread
 // The do everything singleton :)
 object Coordinator {
     private const val TAG = "COORDINATOR"
-    val USER_AGENT: String = String.format("Cyberarm's Renegade Server List/%s (cyberarm.dev)", "2.0")
-    val NO_PING_MAGIC_NUMBER: Int = 8962
-    val BROADCAST_PORT: Int = 46753
+    val USER_AGENT: String = String.format(Locale.US, "Cyberarm's Renegade Server List/%s (cyberarm.dev)", BuildConfig.VERSION_NAME)
+    const val NO_PING_MAGIC_NUMBER: Int = 8962
+    const val BROADCAST_PORT: Int = 46753
+    const val APPLICATION_SETTINGS_SCHEMA: Int = 1
+    const val SERVER_SETTINGS_SCHEMA: Int = 1
 
     // thread safe gsh server list
     private val gshClient: Client = Client()
@@ -77,7 +79,7 @@ object Coordinator {
             Log.i(TAG, "Loaded legacy settings")
 
             val notifyServerSettings = ServerSettings(
-                0,
+                SERVER_SETTINGS_SCHEMA,
                 "",
                 "",
                 legacyApplicationSettings.globalServerSettings.notifyPlayerCount,
@@ -91,7 +93,7 @@ object Coordinator {
             {
                 serverSettings.add(
                     ServerSettings(
-                        0,
+                        SERVER_SETTINGS_SCHEMA,
                         legacyServerSetting.ID,
                         legacyServerSetting.name,
                         legacyServerSetting.notifyPlayerCount,
@@ -103,14 +105,14 @@ object Coordinator {
             }
 
             applicationSettings = ApplicationSettings(
-                0,
+                APPLICATION_SETTINGS_SCHEMA,
                 legacyApplicationSettings.renegadeUsername,
                 false,
                 legacyApplicationSettings.serviceAutoRefreshInterval * 60,
                 legacyApplicationSettings.serviceAutoStartAtBoot,
                 notifyServerSettings,
                 serverSettings,
-                20
+                BuildConfig.VERSION_CODE
             )
 
             if (saveApplicationSettings(context)) {
@@ -121,13 +123,13 @@ object Coordinator {
         // Create default application settings
         } else {
             applicationSettings = ApplicationSettings(
-                0,
+                APPLICATION_SETTINGS_SCHEMA,
                 "",
                 false,
                 3,
                 true,
                 ServerSettings(
-                    0,
+                    SERVER_SETTINGS_SCHEMA,
                     "",
                     "",
                     0,
@@ -136,7 +138,7 @@ object Coordinator {
                     false
                 ),
                 ArrayList<ServerSettings>(),
-                20
+                BuildConfig.VERSION_CODE
             )
 
             Log.i(TAG, "FAILED: Loaded default settings")
@@ -163,7 +165,14 @@ object Coordinator {
     }
 
     fun serverList(): ArrayList<Server> {
-        return gshServerList
+        try {
+            // ensure we're safe to read server list
+            while(gshServerListMutex.tryLock()) {}
+
+            return gshServerList
+        } finally {
+            gshServerListMutex.unlock()
+        }
     }
 
     // does networking stuff
