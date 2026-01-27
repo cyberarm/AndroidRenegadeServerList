@@ -257,6 +257,7 @@ object Coordinator {
             "ren" -> R.drawable.icon_ren
             "tsr" -> R.drawable.icon_tsr
             "woa" -> R.drawable.icon_woa
+
             else -> R.drawable.application_default_image
         }
     }

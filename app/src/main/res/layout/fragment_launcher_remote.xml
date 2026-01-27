@@ -43,7 +43,7 @@
                 android:id="@+id/textView20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Under construction\n\nUse linux? Use Cyberarm's W3D Hub Linux Launcher?\nCome back later on if to see what cool stuff is here." />
+                android:text="Under construction\n\nUse linux? Use Cyberarm's W3D Hub Linux Launcher?\n\nCome back later on if to see what cool stuff is here." />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
